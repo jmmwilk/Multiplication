@@ -1,0 +1,178 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+  background-color: grey;
+}
+
+#application {
+	height: 626px;
+	width: 800px;
+  border: solid black 1px;
+	display: flex;
+  flex-direction: column;
+}
+
+#title-bar {
+	height: 100px;
+  width: 100%;
+	border: solid black 1px;
+}
+
+#frame {
+  height: 100%;
+  width: 100%;
+  border: solid red 1px;
+  display: flex;
+}
+
+#game {
+  border: solid black 1px;
+  position: relative;
+  display: flex;
+  height: 500px;
+  width: 500px;
+}
+
+#game-vertical {
+  display: flex;
+}
+
+#game-horizontal {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+}
+
+#side-bar {
+  height: 100%;
+  width: 200px;
+  border: solid black 1px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;  
+}
+
+#rectangle {
+  border: solid blue 3px;
+  left: 50px;
+  position: absolute;
+  z-index: 1;
+}
+
+.line-horizontal {
+  height: 1px;
+  border: solid green 1px;
+}
+
+.line-vertical {
+  width: 1px;
+  border: solid green 1px;
+
+}
+
+.dot {
+  border: solid red 5px;
+  border-radius: 5px;
+  width: 4px;
+  position: absolute;
+}
+
+.dot:hover {
+  border-color: black;
+}
+
+#dot-top-left {
+  left: -8px;
+  top: -8px;
+}
+
+#dot-top-right {
+  right: -8px;
+  top: -8px;
+}
+
+#dot-bottom-left {
+  left: -8px;
+  bottom: -8px;
+}
+
+#dot-bottom-right {
+  right: -8px;
+  bottom: -8px;
+}
+
+#equation {
+  height: 40px;
+  width: 130px;
+  border: solid black 1px;
+  margin: 10px;
+  display: flex;
+}
+
+#factors {
+  height: 30px;
+  width: 90px;
+  border: solid black 1px;
+  font-size: 20px;
+  color: black;
+  text-align: center;
+}
+
+#squares {
+  height: 40px;
+  width: 80px;
+  font-size: 20px;
+  color: green;
+  margin: 10px;
+}
+
+#multiplication {
+  height: 30px;
+  width: 50px;
+  font-size: 20px;
+}
+
+#sides-button {
+  height: 40px;
+  width: 80px;
+  font-size: 20px;
+  color: blue;
+  margin: 10px;
+}
+
+#area-button {
+  height: 40px;
+  width: 40px;
+  font-size: 20px;
+  color: blue;
+  margin: 10px;
+  border: solid blue 1px;
+}
+
+.side {
+  height: 20px;
+  width: 20px;
+  font-size: 20px;
+  color: blue;
+  position: absolute;
+}
+
+.mushroom {
+  display: block;
+  height: 40px;
+  width: 40px;
+}
+
+.mushroom-icon {
+  height: 40px;
+  width: 40px;
+}
