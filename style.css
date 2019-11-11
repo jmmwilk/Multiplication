@@ -20,10 +20,37 @@ body {
   flex-direction: column;
 }
 
+#name {
+  height: 100px;
+  width: 100%;
+  border: solid black 1px;
+  font-size: 50px;
+  color: red;
+  text-align: center;
+}
+
+.activity {
+  height: 200px;
+  width: 33%;
+  border: solid black 1px;
+  font-size: 40px;
+  color: black;
+  text-align: center;
+}
+
+
+
 #title-bar {
 	height: 100px;
   width: 100%;
 	border: solid black 1px;
+}
+
+#back {
+  height: 40px;
+  width: 100px;
+  font-size: 20px;
+  color: black;
 }
 
 #frame {
@@ -51,9 +78,9 @@ body {
   position: absolute;
 }
 
-#side-bar {
+.side-bar {
   height: 100%;
-  width: 200px;
+  width: 300px;
   border: solid black 1px;
   display: flex;
   flex-direction: column;
@@ -62,10 +89,25 @@ body {
 }
 
 #rectangle {
-  border: solid blue 3px;
+  display: flex;
+  align-content: flex-start;
+  outline: solid blue 5px;
   left: 50px;
   position: absolute;
   z-index: 1;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+#rectangle-horizontal {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+}
+
+#rectangle-vertical {
+  display:flex;
+  position: absolute;
 }
 
 .line-horizontal {
@@ -80,8 +122,8 @@ body {
 }
 
 .dot {
-  border: solid red 5px;
-  border-radius: 5px;
+  border: solid red 8px;
+  border-radius: 8px;
   width: 4px;
   position: absolute;
 }
@@ -110,18 +152,17 @@ body {
   bottom: -8px;
 }
 
-#equation {
+#equation-explore {
   height: 40px;
-  width: 130px;
-  border: solid black 1px;
+  width: 140px;
   margin: 10px;
   display: flex;
+  border: solid black 1px;
 }
 
 #factors {
   height: 30px;
   width: 90px;
-  border: solid black 1px;
   font-size: 20px;
   color: black;
   text-align: center;
@@ -141,6 +182,12 @@ body {
   font-size: 20px;
 }
 
+#multiplication-learn {
+  height: 30px;
+  width: 50px;
+  font-size: 20px;
+}
+
 #sides-button {
   height: 40px;
   width: 80px;
@@ -149,9 +196,31 @@ body {
   margin: 10px;
 }
 
-#area-button {
+#counting-button {
   height: 40px;
   width: 40px;
+  font-size: 20px;
+  color: blue;
+  margin: 10px;
+}
+
+.number-container {
+  font-size: 30px;
+  color: black;
+}
+
+#horizontal-div-button {
+  height: 60px;
+  width: 120px;
+  font-size: 20px;
+  color: blue;
+  margin: 10px;
+  border: solid blue 1px;
+}
+
+#vertical-div-button {
+  height: 60px;
+  width: 120px;
   font-size: 20px;
   color: blue;
   margin: 10px;
@@ -176,3 +245,74 @@ body {
   height: 40px;
   width: 40px;
 }
+
+.line-horizontal-rec {
+  border: solid blue 2px;
+  height: 1px;
+}
+
+.line-vertical-rec {
+  border: solid blue 2px;
+  width: 1px;
+}
+
+#equation-play {
+  height: 80px;
+  width: 290px;
+  margin: 10px;
+  display: flex;
+  margin: 10px;
+}
+
+#result {
+  width: 120px;
+  display: flex;
+}
+
+#factors-play {
+  font-size: 60px;
+  width: 130px;
+}
+
+#equals {
+  font-size: 60px;
+  width: 40px;
+}
+
+#multiplication-play {
+  width: 100px;
+  font-size: 60px;
+  color: black; 
+  margin-left: 10px;
+}
+
+#ok {
+  height:50px;
+  width: 50px;
+  border-radius: 50px;
+  font-size: 20px;
+  color: white;
+  margin: 10px;
+  background-color: green
+}
+
+#feedback {
+  height: 200px;
+  width: 250px;
+  border: solid black 1px;
+  margin: 10px;
+}
+
+#equation-container {
+  display: flex;
+  flex-direction: row;
+  height: 60px;
+  width: 220px;
+  border: solid green 1px;
+}
+
+
+
+
+
+

@@ -9,9 +9,26 @@
     <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="index.js"></script>
   </head>
-  <body onload="start()">
+  <body onload="showHomeScreen()">
     <div id="application">
+      <div id="name">
+        Multiplication
+      </div>
+      <div id="activities-container">
+        <button id="explore" class="activity">
+          Explore
+        </button>
+        <button id="learn" class="activity">
+          Learn
+        </button>
+        <button id="play" class="activity">
+          Play
+        </button>
+      </div>
       <div id="title-bar">
+        <button id="back">
+          <- back
+        </button>
       </div>
       <div id="frame">
         <div id=game>
@@ -20,6 +37,10 @@
             <div id="dot-top-right" class="dot"></div>
             <div id="dot-bottom-left" class="dot"></div>
             <div id="dot-bottom-right" class="dot"></div>
+            <div id="rectangle-horizontal">
+            </div>
+            <div id="rectangle-vertical">
+            </div>
           </div>
           <div id="game-vertical">
           </div>
@@ -34,11 +55,18 @@
           <div id="right-side" class="side">
           </div>
         </div>
-        <div id="side-bar">
-          <div id="equation">
-            <div id="factors">
+        <div id="side-bar-explore" class="side-bar">
+          <div id="equation-container">
+            <div id="equation-explore" class= "equation">
+              <div id="factors">
+              </div>
+              <button id="multiplication">
+              </button>
+              <input id ="multiplication-learn">
+              </input>
             </div>
-            <button id="multiplication">
+            <button id="ok">
+              OK
             </button>
           </div>
           <button id="squares">
@@ -48,9 +76,32 @@
             sides
           </button>
           <button id="mushroom-button">
+            <img id="mushroom-icon" src="mushroom.img" class="mushroom-icon"/>
           </button>
-          <button id="area-button">
+          <button id="counting-button">
+            1
           </button>
+          <button id="horizontal-div-button">
+            horizontal lines
+          </button>
+          <button id="vertical-div-button">
+            vertical lines
+          </button>
+        </div>
+        <div id="side-bar-play" class="side-bar">
+          <div id="equation-play">
+            <div id="factors-play">
+            </div>
+            <div id="result">
+              <div id="equals">
+              = 
+              </div>
+              <input id="multiplication-play">
+              </input>
+            </div>
+          </div>
+          <div id="feedback">
+          </div>
         </div>
       </div>
     </div>
