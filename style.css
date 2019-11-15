@@ -256,7 +256,21 @@ body {
   width: 1px;
 }
 
-#equation-play {
+.result-box {
+  height: 40px;
+  width: 40px;
+  border: solid red 1px;
+  display: flex;
+  position: absolute;
+  font-size: 20px;
+}
+
+.done-rec {
+  border: solid green 10px;
+  position: absolute;
+}
+
+/*#equation-play {
   height: 80px;
   width: 290px;
   margin: 10px;
@@ -267,9 +281,9 @@ body {
 #result {
   width: 120px;
   display: flex;
-}
+}*/
 
-#factors-play {
+/*#factors-play {
   font-size: 60px;
   width: 130px;
 }
@@ -277,14 +291,14 @@ body {
 #equals {
   font-size: 60px;
   width: 40px;
-}
+}*/
 
-#multiplication-play {
+/*#multiplication-play {
   width: 100px;
   font-size: 60px;
   color: black; 
   margin-left: 10px;
-}
+}*/
 
 #ok {
   height:50px;
@@ -296,12 +310,12 @@ body {
   background-color: green
 }
 
-#feedback {
+/*#feedback {
   height: 200px;
   width: 250px;
   border: solid black 1px;
   margin: 10px;
-}
+}*/
 
 #equation-container {
   display: flex;
@@ -309,6 +323,7 @@ body {
   height: 60px;
   width: 220px;
   border: solid green 1px;
+  font-size: 30px;
 }
 
 

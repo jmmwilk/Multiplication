@@ -11,7 +11,8 @@ let numbersContainersShown = false;
 let resultShown = true;
 let factor1;
 let factor2;
-let okCount = 0;
+let okCount = false;
+let view;
 
 
 function showHomeScreen () {
@@ -23,8 +24,6 @@ function showHomeScreen () {
 	let frame = document.getElementById('frame');
 	titleBar.style.display = 'none';
 	frame.style.display = 'none';
-	let sideBarPlay = document.getElementById('side-bar-play');
-	sideBarPlay.style.display = 'none';
 	let sideBarExplore = document.getElementById('side-bar-explore');
 	sideBarExplore.style.display = 'none';
 	let explore = document.getElementById('explore');
@@ -649,8 +648,8 @@ function showPlayScreen () {
 	let frame = document.getElementById('frame');
 	titleBar.style.display = '';
 	frame.style.display = '';
-	let sideBarPlay = document.getElementById('side-bar-play');
-	sideBarPlay.style.display = '';
+	let sideBarExplore = document.getElementById('side-bar-explore');
+	sideBarExplore.style.display = '';
 }
 
 function goToLearn () {
@@ -664,8 +663,6 @@ function showLearnScreen () {
 	let frame = document.getElementById('frame');
 	titleBar.style.display = '';
 	frame.style.display = '';
-	let sideBarPlay = document.getElementById('side-bar-play');
-	sideBarPlay.style.display = 'none';
 	let sideBarExplore = document.getElementById('side-bar-explore');
 	sideBarExplore.style.display = '';
 }
@@ -677,9 +674,6 @@ function startLearn () {
 	let ok = document.getElementById('ok');
 	ok.style.display = '';
 	newExercise ();
-//	let factors = generateFactors ();
-//	fillFactors (factors);
-//	ok.onclick = function () {okLearn (factors)};
 
 	let dots = document.getElementsByClassName('dot');
 	Array.from(dots).forEach(function(dot) {
@@ -721,10 +715,13 @@ function goToPlay () {
 
 function startPlay () {
 	cleanUp ();
-
-	let factors = generateFactors ();
-	fillFactors ();
-	displayResult ();
+	view = 'play';
+	hideMultiplicationBox ();
+	displayButtons ();
+	mushroomsShown = true;
+	let ok = document.getElementById('ok');
+	ok.style.display = '';
+	newExercise ();
 
 	let dots = document.getElementsByClassName('dot');
 	Array.from(dots).forEach(function(dot) {
@@ -733,6 +730,7 @@ function startPlay () {
 				resizeRectangle(event, dot);
 				resizeRecHorizontal ();
 				resizeRecVertical ();
+				addMushroomsInRectangle ();
 			};
 			frame.onmouseup = function () {
 				frame.onmousemove = undefined;
@@ -740,12 +738,10 @@ function startPlay () {
 				adjustRectangle ();
 				resizeRecHorizontal ();
 				resizeRecVertical ();
+				addMushroomsInRectangle ();
 			}
 		}
 	})
-
-	let ok = document.getElementById('ok');
-	ok.onclick = checkSize;
 }
 
 function generateFactors () {
@@ -756,8 +752,6 @@ function generateFactors () {
 }
 
 function fillFactors (factors) {
-	console.log ('uzupelniam');
-	console.log (factors);
 	let factor1 = factors[0];
 	let factor2 = factors[1];
 	let factorsbox = document.getElementById('factors');
@@ -779,7 +773,6 @@ function hideMultiplicationBox () {
 function hideMultiplicationLearn () {
 	let multiplicationLearn = document.getElementById('multiplication-learn');
 	multiplicationLearn.style.display = 'none';
-	console.log ('dupa');
 }
 
 function showMultiplicationLearn () {
@@ -798,12 +791,17 @@ function displayResult () {
 }
 
 function okLearn (factors) {
-	console.log ('okCount', okCount)
-	if (okCount == 1) {
-		checkAnswer (factors)
-	}
-	if (okCount == 0) {
+	if (okCount == false) {
 		check(factors)
+	}
+	if (okCount == true) {
+		if (checkAnswer (factors) == 'wellDone') {
+			if (view == 'play') {
+				removeMushrooms ();
+				createDoneRec ();
+			}
+			newExercise ();
+		}
 	}
 }
 
@@ -811,8 +809,8 @@ function check (factors) {
 	if (checkSize (factors) == true) {
 		showMultiplicationLearn ();
 		addEquelsSign (factors);
-		okCount = 1;
-	} else {
+		okCount = !okCount;
+		return 'wellDone';
 	}
 }
 
@@ -821,19 +819,15 @@ function checkAnswer (factors) {
 	let factor1 = factors[0];
 	let factor2 = factors[1];
 	if (multiplicationLearn.value == factor1*factor2) {
-		newExercise ();
-		okCount = 0;
-	} else {
+		okCount = !okCount;
+		return 'wellDone';
 	}
 }
 
 function newExercise () {
-	console.log('nowe zadanie');
-	okCount = 0;
 	removeAnswer ();
 	hideMultiplicationLearn ();
 	let factors = generateFactors ();
-	console.log ('factors', factors);
 	fillFactors (factors);
 	let ok = document.getElementById('ok');
 	ok.onclick = function () {okLearn (factors)};
@@ -862,13 +856,29 @@ function checkSize (factors) {
 	}
 }
 
-function successDisplay () {
-
+function createResultBox () {
+	let resultBox = document.createElement('div');
+	document.getElementById('doneRec').appendChild(resultBox);
+	resultBox.innerText = 'AA';
+	resultBox.className = 'result-box';
+	console.log ('zupa');
 }
 
-
-
-
-
+function createDoneRec () {
+	let doneRec = document.createElement('div');
+	doneRec.className = 'done-rec';
+	let game = document.getElementById('game');
+	game.appendChild(doneRec);
+	let rectangle = document.getElementById('rectangle');
+	doneRec.style.height = rectangle.style.height;
+	doneRec.style.width = rectangle.style.width;
+	doneRec.style.top = rectangle.style.top;
+	doneRec.style.left = rectangle.style.left;
+//	createResultBox ();
+	let resultBox = document.createElement('div');
+	doneRec.appendChild(resultBox);
+	resultBox.innerText = 'AA';
+	resultBox.className = 'result-box';
+}
 
 
