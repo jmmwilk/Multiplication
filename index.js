@@ -71,7 +71,7 @@ function cleanUp () {
 	multiplicationShown = false;
 	hideMultiplicationLearn ();
 	createGame ();
-	createRectangle ();
+	makeRectangle ();
 	goBack();
 }
 
@@ -403,7 +403,7 @@ function removeLines (parentId, lineClass) {
 	Array.from(lines).forEach(function (line) {rectangleName.removeChild(line)});
 }
 
-function createRectangle () {
+function makeRectangle () {
 	let rectangle = document.getElementById('rectangle');
 	rectangle.style.height = squareSize + 'px';
 	rectangle.style.width = squareSize + 'px';
@@ -745,8 +745,8 @@ function startPlay () {
 }
 
 function generateFactors () {
-	let factor1 =  Math.floor (Math.random () * 9) + 1;
-	let factor2 =  Math.floor (Math.random () * 9) + 1;
+	let factor1 =  Math.floor (Math.random () * 5) + 1;
+	let factor2 =  Math.floor (Math.random () * 5) + 1;
 	let factors = [factor1, factor2];
 	return factors;
 }
@@ -790,7 +790,7 @@ function displayResult () {
 	resultShown = !resultShown;
 }
 
-function okLearn (factors) {
+function okClick (factors) {
 	if (okCount == false) {
 		check(factors)
 	}
@@ -798,9 +798,11 @@ function okLearn (factors) {
 		if (checkAnswer (factors) == 'wellDone') {
 			if (view == 'play') {
 				removeMushrooms ();
-				createDoneRec ();
+				createDoneRec (factors);
+				createCompRec ();
 			}
 			newExercise ();
+			putRectangleInNewPosition ();
 		}
 	}
 }
@@ -830,7 +832,7 @@ function newExercise () {
 	let factors = generateFactors ();
 	fillFactors (factors);
 	let ok = document.getElementById('ok');
-	ok.onclick = function () {okLearn (factors)};
+	ok.onclick = function () {okClick (factors)};
 }
 
 function removeAnswer () {
@@ -856,15 +858,22 @@ function checkSize (factors) {
 	}
 }
 
-function createResultBox () {
+function createResultBox (parent, factors) {
 	let resultBox = document.createElement('div');
-	document.getElementById('doneRec').appendChild(resultBox);
-	resultBox.innerText = 'AA';
+	parent.appendChild(resultBox);
+	let factor1 = factors[0];
+	let factor2 = factors[1];
+	let result = document.createElement('div');
+	resultBox.appendChild(result)
+	result.innerText = factor1 * factor2;
 	resultBox.className = 'result-box';
-	console.log ('zupa');
+	const mushroom = document.createElement('img');
+    resultBox.appendChild(mushroom);
+	mushroom.src = 'mushroom.img';
+	mushroom.className = 'mushroom-icon';
 }
 
-function createDoneRec () {
+function createDoneRec (factors) {
 	let doneRec = document.createElement('div');
 	doneRec.className = 'done-rec';
 	let game = document.getElementById('game');
@@ -874,11 +883,62 @@ function createDoneRec () {
 	doneRec.style.width = rectangle.style.width;
 	doneRec.style.top = rectangle.style.top;
 	doneRec.style.left = rectangle.style.left;
-//	createResultBox ();
-	let resultBox = document.createElement('div');
-	doneRec.appendChild(resultBox);
-	resultBox.innerText = 'AA';
-	resultBox.className = 'result-box';
+	createResultBox (doneRec, factors);
 }
+
+function createCompRec () {
+	let factors = generateFactors ();
+	let factor1 = factors[0];
+	let factor2 = factors[1];
+	let compRec = document.createElement('div');
+	compRec.className = 'comp-rec'
+	let game = document.getElementById('game');
+	game.appendChild(compRec);
+	compRec.style.height = factor1 * squareSize + 'px';
+	compRec.style.width = factor2 * squareSize + 'px';
+	compRec.style.bottom = '22.5px';
+	compRec.style.right = '22.5px';
+	createResultBox (compRec, factors);
+}
+
+function putRectangleInNewPosition () {
+	let doneRecs = document.getElementsByClassName ('done-rec');
+	let rectangle = document.getElementById('rectangle');
+	let left
+	let top
+	let newLeft
+	let newTop
+	for (let i=0; i<10; i++) {
+		for (let x=0; x<10; x++) {
+			newLeft = i*squareSize + squareSize/2 + 1;
+			newTop = x*squareSize + squareSize/2 + 1;
+//			console.log(newLeft, newTop);
+			Array.from(doneRecs).forEach(function(doneRec) {
+				if (newLeft < doneRec.offsetLeft + doneRec.offsetWidth
+ 					&& newLeft > doneRec.offsetLeft) {
+ 					left = true;
+ 				} else {
+					left = false;
+ 				}
+ 				if (newTop < doneRec.offsetTop + doneRec.offsetHeight
+ 					&& newTop > doneRec.offsetTop) {
+ 					top = true;
+ 				} else {
+ 					top = false;
+ 				}
+ 				console.log (left, top);
+				if (left == false || top == false) {
+					console.log('papaya');
+ 					rectangle.style.width = squareSize + 'px';
+ 					rectangle.style.height = squareSize + 'px';
+					rectangle.style.left = newLeft + 'px';
+ 					rectangle.style.top = newTop + 'px';
+ 					return
+ 				}
+			})
+		}
+	}
+}
+
 
 

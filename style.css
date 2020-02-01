@@ -266,7 +266,14 @@ body {
 }
 
 .done-rec {
-  border: solid green 10px;
+  border: solid green 5px;
+  position: absolute;
+//  background-color: rgba(30, 130, 76, 1);
+//  opacity: 0.3;
+}
+
+.comp-rec {
+  border: solid red 5px;
   position: absolute;
 }
 
