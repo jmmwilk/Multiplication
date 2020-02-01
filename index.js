@@ -876,6 +876,7 @@ function createResultBox (parent, factors) {
 function createDoneRec (factors) {
 	let doneRec = document.createElement('div');
 	doneRec.className = 'done-rec';
+	doneRec.className = 'all-rec';
 	let game = document.getElementById('game');
 	game.appendChild(doneRec);
 	let rectangle = document.getElementById('rectangle');
@@ -891,7 +892,8 @@ function createCompRec () {
 	let factor1 = factors[0];
 	let factor2 = factors[1];
 	let compRec = document.createElement('div');
-	compRec.className = 'comp-rec'
+	compRec.className = 'comp-rec';
+	compRec.className = 'all-rec';
 	let game = document.getElementById('game');
 	game.appendChild(compRec);
 	compRec.style.height = factor1 * squareSize + 'px';
@@ -902,7 +904,10 @@ function createCompRec () {
 }
 
 function putRectangleInNewPosition () {
+	let allRecs = document.getElementsByClassName ('all-rec');
 	let doneRecs = document.getElementsByClassName ('done-rec');
+	console.log (allRecs);
+	console.log (doneRecs);
 	let rectangle = document.getElementById('rectangle');
 	let left
 	let top
@@ -912,30 +917,34 @@ function putRectangleInNewPosition () {
 		for (let x=0; x<10; x++) {
 			newLeft = i*squareSize + squareSize/2 + 1;
 			newTop = x*squareSize + squareSize/2 + 1;
-//			console.log(newLeft, newTop);
-			Array.from(doneRecs).forEach(function(doneRec) {
-				if (newLeft < doneRec.offsetLeft + doneRec.offsetWidth
- 					&& newLeft > doneRec.offsetLeft) {
+			console.log(newLeft, newTop);
+			let squareisfree = true;
+			Array.from(allRecs).forEach(function(allRec) {
+				if (newLeft < allRec.offsetLeft + allRec.offsetWidth
+ 					&& newLeft > allRec.offsetLeft) {
  					left = true;
  				} else {
 					left = false;
  				}
- 				if (newTop < doneRec.offsetTop + doneRec.offsetHeight
- 					&& newTop > doneRec.offsetTop) {
+ 				if (newTop < allRec.offsetTop + allRec.offsetHeight
+ 					&& newTop > allRec.offsetTop) {
  					top = true;
  				} else {
  					top = false;
  				}
  				console.log (left, top);
-				if (left == false || top == false) {
+ 				if (left == true && top == true) {
+ 					squareisfree = false;
+ 				}
+			})
+			if (squareisfree == true) {
 					console.log('papaya');
  					rectangle.style.width = squareSize + 'px';
  					rectangle.style.height = squareSize + 'px';
 					rectangle.style.left = newLeft + 'px';
  					rectangle.style.top = newTop + 'px';
  					return
- 				}
-			})
+ 			}
 		}
 	}
 }
