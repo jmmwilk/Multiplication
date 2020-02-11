@@ -99,7 +99,7 @@ function startExplore () {
 			frame.onmouseup = function () {
 				frame.onmousemove = undefined;
 				frame.onmouseup = undefined;
-				adjustRectangle ();
+				adjustRectangle (lastPosition, lastDimensions);
 				resizeRecHorizontal ();
 				resizeRecVertical ();
 				displayEquation ();
@@ -123,7 +123,7 @@ function startExplore () {
 		frame.onmouseup = function (event) {
 			frame.onmousemove = undefined;
 			frame.onmouseup = undefined;
-			adjustRectangle ();
+			adjustRectangle (lastPosition, lastDimensions);
 			putRectangleInNewPosition (lastPosition);
 		}
 	}
@@ -344,8 +344,24 @@ function mousePosition (event) {
 	return mouse;
 }
 
+function rectangleDimensions () {
+	let rectangle = document.getElementById('rectangle');
+	let dimensions = {
+		width: rectangle.style.width,
+		height: rectangle.style.height,
+	}
+	return dimensions;
+}
 
-function adjustRectangle () {
+function adjustRectangleDimensions (lastDimensions, isNewSpaceFree) {
+	let rectangle = document.getElementById('rectangle');
+	if (isNewSpaceFree == false) {
+		rectangle.style.width = lastDimensions.width;
+		rectangle.style.height = lastDimensions.height;
+	}
+}
+
+function adjustRectangle (lastPosition, lastDimensions) {
 	let rectangle = document.getElementById('rectangle');
 	for (let i=0; i<gameSize + 1; i++) {
 		if (parseInt(rectangle.style.width)> (i - 0.5) * squareSize
@@ -384,6 +400,9 @@ function adjustRectangle () {
 	if (parseInt(rectangle.style.height)> gameSize * squareSize) {
 			rectangle.style.height = gameSize * squareSize + 'px';
 	}
+	let isNewSpaceFree = isSpaceFree ();
+	putRectangleInNewPosition (lastPosition, isNewSpaceFree);
+	adjustRectangleDimensions (lastDimensions, isNewSpaceFree);
 }
 
 function displayEquation () {
@@ -744,11 +763,15 @@ function startPlay () {
 	mushroomsShown = true;
 	let ok = document.getElementById('ok');
 	ok.style.display = '';
+	let lastPosition;
+	let lastDimensions;
 	newExercise ();
 
 	let dots = document.getElementsByClassName('dot');
 	Array.from(dots).forEach(function(dot) {
 		dot.onmousedown = function () {
+			lastPosition = rectanglePosition();
+			lastDimensions = rectangleDimensions();
 			frame.onmousemove = function(event){
 				resizeRectangle(event, dot);
 				resizeRecHorizontal ();
@@ -758,7 +781,7 @@ function startPlay () {
 			frame.onmouseup = function () {
 				frame.onmousemove = undefined;
 				frame.onmouseup = undefined;
-				adjustRectangle ();
+				adjustRectangle (lastPosition, lastDimensions);
 				resizeRecHorizontal ();
 				resizeRecVertical ();
 				addMushroomsInRectangle ();
@@ -767,15 +790,15 @@ function startPlay () {
 	})
 	let hand = document.getElementById('hand');
 	hand.onmousedown = function () {
-		let lastPosition = rectanglePosition();
+		lastPosition = rectanglePosition();
+		lastDimensions = rectangleDimensions();
 		frame.onmousemove = function (event) {
 			moveRectangle (event)
 		};
 		frame.onmouseup = function (event) {
 			frame.onmousemove = undefined;
 			frame.onmouseup = undefined;
-			adjustRectangle ();
-			putRectangleInNewPosition (lastPosition);
+			adjustRectangle (lastPosition, lastDimensions);
 		}
 	}
 }
@@ -990,13 +1013,14 @@ function createNewUserRectangle () {
 	}
 }
 
-function putRectangleInNewPosition (lastPosition) {
-	let isNewSpaceFree = isSpaceFree ();
+function putRectangleInNewPosition (lastPosition, isNewSpaceFree) {
 	if (isNewSpaceFree == false) {
 		rectangle.style.top = lastPosition.top + 'px';
 		rectangle.style.left = lastPosition.left + 'px';
 	}
 }
+
+
 
 function isSpaceFree () {
 	let isSpaceFree = true;
