@@ -14,7 +14,6 @@ let factor2;
 let okCount = false;
 let view;
 
-
 function showHomeScreen () {
 	let name = document.getElementById('name');
 	let activitiesContainer = document.getElementById('activities-container');
@@ -115,6 +114,19 @@ function startExplore () {
 			}
 		}
 	})
+	let hand = document.getElementById('hand');
+	hand.onmousedown = function () {
+		let lastPosition = rectanglePosition();
+		frame.onmousemove = function (event) {
+			moveRectangle (event)
+		};
+		frame.onmouseup = function (event) {
+			frame.onmousemove = undefined;
+			frame.onmouseup = undefined;
+			adjustRectangle ();
+			putRectangleInNewPosition (lastPosition);
+		}
+	}
 }
 
 function displayButtons () {
@@ -705,6 +717,17 @@ function startLearn () {
 			}
 		}
 	})
+	let hand = document.getElementById('hand');
+	hand.onmousedown = function () {
+		frame.onmousemove = function (event) {
+			moveRectangle (event)
+		};
+		frame.onmouseup = function () {
+			frame.onmousemove = undefined;
+			frame.onmouseup = undefined;
+			adjustRectangle ();
+		}
+	}
 }
 
 function goToPlay () {
@@ -742,6 +765,19 @@ function startPlay () {
 			}
 		}
 	})
+	let hand = document.getElementById('hand');
+	hand.onmousedown = function () {
+		let lastPosition = rectanglePosition();
+		frame.onmousemove = function (event) {
+			moveRectangle (event)
+		};
+		frame.onmouseup = function (event) {
+			frame.onmousemove = undefined;
+			frame.onmouseup = undefined;
+			adjustRectangle ();
+			putRectangleInNewPosition (lastPosition);
+		}
+	}
 }
 
 function generateFactors () {
@@ -802,7 +838,7 @@ function okClick (factors) {
 				createCompRec ();
 			}
 			newExercise ();
-			putRectangleInNewPosition ();
+			createNewUserRectangle ();
 		}
 	}
 }
@@ -875,8 +911,7 @@ function createResultBox (parent, factors) {
 
 function createDoneRec (factors) {
 	let doneRec = document.createElement('div');
-	doneRec.className = 'done-rec';
-	doneRec.className = 'all-rec';
+	doneRec.className = 'done-rec all-rec';
 	let game = document.getElementById('game');
 	game.appendChild(doneRec);
 	let rectangle = document.getElementById('rectangle');
@@ -892,62 +927,109 @@ function createCompRec () {
 	let factor1 = factors[0];
 	let factor2 = factors[1];
 	let compRec = document.createElement('div');
-	compRec.className = 'comp-rec';
-	compRec.className = 'all-rec';
+	compRec.className = 'comp-rec all-rec' ;
+	createResultBox (compRec, factors);
 	let game = document.getElementById('game');
 	game.appendChild(compRec);
 	compRec.style.height = factor1 * squareSize + 'px';
 	compRec.style.width = factor2 * squareSize + 'px';
-	compRec.style.bottom = '22.5px';
-	compRec.style.right = '22.5px';
-	createResultBox (compRec, factors);
+	let allRecs = document.getElementsByClassName ('all-rec');
+
+	for (let x=10; x>=1; x--) {
+		for (let y=10; y>=1; y--) {
+			for (let i=x; i>=(x - factor2 + 1); i--) {
+				for (let j=y; j>=(y - factor1 + 1); j--) {
+					let squareIsFree = true;
+					Array.from(allRecs).forEach(function(allRec) {
+						let a = (allRec.offsetLeft - squareSize/2 - 0.5)/squareSize + 1;
+						let b = (allRec.offsetTop - squareSize/2 - 0.5)/squareSize + 1;
+						console.log('x, y', x, y)
+						console.log ('i,j', i, j)
+						console.log ('a, b', a, b);
+						if (i>=a && i<=a+factor2-1 && j>=b && j<=b+factor1-1) {
+							squareIsFree = false;
+							console.log ('squareIsFree', squareIsFree);
+							return
+						}
+					})
+					if (squareIsFree == true) {
+						compRec.style.left = (x - factor2 + 1)*squareSize - squareSize/2 + 'px';
+						compRec.style.top = (y - factor1 + 1)*squareSize - squareSize/2 + 'px';
+		 				return
+		 			}
+				}
+			}
+		}
+	}
 }
 
-function putRectangleInNewPosition () {
+function createNewUserRectangle () {
 	let allRecs = document.getElementsByClassName ('all-rec');
-	let doneRecs = document.getElementsByClassName ('done-rec');
-	console.log (allRecs);
-	console.log (doneRecs);
 	let rectangle = document.getElementById('rectangle');
-	let left
-	let top
-	let newLeft
-	let newTop
-	for (let i=0; i<10; i++) {
-		for (let x=0; x<10; x++) {
-			newLeft = i*squareSize + squareSize/2 + 1;
-			newTop = x*squareSize + squareSize/2 + 1;
-			console.log(newLeft, newTop);
-			let squareisfree = true;
+	for (let x=1; x<=10; x++) {
+		for (let y=1; y<=10; y++) {
+			let squareIsFree = true;
 			Array.from(allRecs).forEach(function(allRec) {
-				if (newLeft < allRec.offsetLeft + allRec.offsetWidth
- 					&& newLeft > allRec.offsetLeft) {
- 					left = true;
- 				} else {
-					left = false;
- 				}
- 				if (newTop < allRec.offsetTop + allRec.offsetHeight
- 					&& newTop > allRec.offsetTop) {
- 					top = true;
- 				} else {
- 					top = false;
- 				}
- 				console.log (left, top);
- 				if (left == true && top == true) {
- 					squareisfree = false;
- 				}
+				let a = (allRec.offsetLeft - squareSize/2 - 0.5)/squareSize + 1;
+				let b = (allRec.offsetTop - squareSize/2 - 0.5)/squareSize + 1;
+				let allRecWidth = allRec.offsetWidth / squareSize;
+				let allRecHeight = allRec.offsetHeight / squareSize;
+				if (x>=a && x<=a+allRecWidth-1 && y>=b && y<=b+allRecHeight-1) {
+					squareIsFree = false;
+					return
+				}
 			})
-			if (squareisfree == true) {
-					console.log('papaya');
- 					rectangle.style.width = squareSize + 'px';
- 					rectangle.style.height = squareSize + 'px';
-					rectangle.style.left = newLeft + 'px';
- 					rectangle.style.top = newTop + 'px';
- 					return
+			if (squareIsFree == true) {
+ 				rectangle.style.width = squareSize + 'px';
+ 				rectangle.style.height = squareSize + 'px';
+				rectangle.style.left = (x-1)*squareSize + squareSize/2 + 'px';
+ 				rectangle.style.top = (y-1)*squareSize + squareSize/2 + 'px';
+ 				return
  			}
 		}
 	}
 }
 
+function putRectangleInNewPosition (lastPosition) {
+	let isNewSpaceFree = isSpaceFree ();
+	if (isNewSpaceFree == false) {
+		rectangle.style.top = lastPosition.top + 'px';
+		rectangle.style.left = lastPosition.left + 'px';
+	}
+}
 
+function isSpaceFree () {
+	let isSpaceFree = true;
+	let rectangle = document.getElementById('rectangle');
+	let allRecs = document.getElementsByClassName ('all-rec');
+	let a;
+	let b;
+	let x = (rectangle.offsetLeft - squareSize/2 - 0.5) / squareSize + 1;
+	let y = (rectangle.offsetTop - squareSize/2 - 0.5) / squareSize + 1;
+	let width = rectangle.offsetWidth / squareSize;
+	let height = rectangle.offsetHeight / squareSize;
+	for (let i = x; i < x + width; i++) {
+		for (let j = y; j < y + height; j++) {
+			Array.from(allRecs).forEach(function(allRec) {
+				a = (allRec.offsetLeft - squareSize/2 - 0.5)/squareSize + 1;
+				b = (allRec.offsetTop - squareSize/2 - 0.5)/squareSize + 1;
+				let allRecWidth = allRec.offsetWidth / squareSize;
+				let allRecHeight = allRec.offsetHeight / squareSize;
+				if (i>=a && i<=a+allRecWidth-1 && j>=b && j<=b+allRecHeight-1) {
+					isSpaceFree = false;
+					return
+				}
+			})
+		}
+	}
+	return isSpaceFree;
+}
+
+function moveRectangle (event) {
+	let hand = document.getElementById('hand');
+	let mouse = mousePosition (event);
+	let rectangle = document.getElementById('rectangle');
+	rectangle.style.top = mouse.y + 'px';
+	rectangle.style.left = mouse.x -parseInt(rectangle.style.width)/2 + 'px';
+}
 

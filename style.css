@@ -277,6 +277,10 @@ body {
   position: absolute;
 }
 
+.all-rec {
+
+}
+
 /*#equation-play {
   height: 80px;
   width: 290px;
@@ -333,8 +337,15 @@ body {
   font-size: 30px;
 }
 
-
-
+#hand {
+  border: solid green 8px;
+  border-radius: 8px;
+  width: 4px;
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  z-index: 1;
+}
 
 
 
