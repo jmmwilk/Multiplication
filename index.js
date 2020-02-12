@@ -957,33 +957,43 @@ function createCompRec () {
 	compRec.style.height = factor1 * squareSize + 'px';
 	compRec.style.width = factor2 * squareSize + 'px';
 	let allRecs = document.getElementsByClassName ('all-rec');
-
 	for (let x=10; x>=1; x--) {
 		for (let y=10; y>=1; y--) {
-			for (let i=x; i>=(x - factor2 + 1); i--) {
+			let spaceIsFree = isSpaceFreeForCompRec (factor1, factor2, x, y);
+			console.log ('spaceIsFree', spaceIsFree)
+			if (spaceIsFree == true) {
+				compRec.style.left = (x - factor2 + 1)*squareSize - squareSize/2 + 'px';
+				compRec.style.top = (y - factor1 + 1)*squareSize - squareSize/2 + 'px';
+		 		return
+		 	}
+		}
+	}
+}
+
+function isSpaceFreeForCompRec (factor1, factor2, x, y) {
+	console.log('x, y, factor1, factor2', x, y, factor1, factor2);
+	let allRecs = document.getElementsByClassName ('all-rec');
+	let squareIsFree = true;
+	for (let i=x; i>=(x - factor2 + 1); i--) {
 				for (let j=y; j>=(y - factor1 + 1); j--) {
-					let squareIsFree = true;
+					if (squareIsFree == false) {
+						console.log('flądra')
+						return squareIsFree
+					}
 					Array.from(allRecs).forEach(function(allRec) {
 						let a = (allRec.offsetLeft - squareSize/2 - 0.5)/squareSize + 1;
 						let b = (allRec.offsetTop - squareSize/2 - 0.5)/squareSize + 1;
-						console.log('x, y', x, y)
-						console.log ('i,j', i, j)
-						console.log ('a, b', a, b);
+						// console.log('x, y', x, y)
+						// console.log ('i,j', i, j)
+						// console.log ('a, b', a, b);
 						if (i>=a && i<=a+factor2-1 && j>=b && j<=b+factor1-1) {
 							squareIsFree = false;
-							console.log ('squareIsFree', squareIsFree);
 							return
 						}
 					})
-					if (squareIsFree == true) {
-						compRec.style.left = (x - factor2 + 1)*squareSize - squareSize/2 + 'px';
-						compRec.style.top = (y - factor1 + 1)*squareSize - squareSize/2 + 'px';
-		 				return
-		 			}
 				}
 			}
-		}
-	}
+	return squareIsFree
 }
 
 function createNewUserRectangle () {
