@@ -977,16 +977,14 @@ function isSpaceFreeForCompRec (factor1, factor2, x, y) {
 	for (let i=x; i>=(x - factor2 + 1); i--) {
 				for (let j=y; j>=(y - factor1 + 1); j--) {
 					if (squareIsFree == false) {
-						console.log('flądra')
 						return squareIsFree
 					}
 					Array.from(allRecs).forEach(function(allRec) {
 						let a = (allRec.offsetLeft - squareSize/2 - 0.5)/squareSize + 1;
 						let b = (allRec.offsetTop - squareSize/2 - 0.5)/squareSize + 1;
-						// console.log('x, y', x, y)
-						// console.log ('i,j', i, j)
-						// console.log ('a, b', a, b);
-						if (i>=a && i<=a+factor2-1 && j>=b && j<=b+factor1-1) {
+						let allRecWidth = allRec.offsetWidth / squareSize;
+						let allRecHeight = allRec.offsetHeight / squareSize;
+						if (i>=a && i<=a+allRecWidth-1 && j>=b && j<=b+allRecHeight-1) {
 							squareIsFree = false;
 							return
 						}
