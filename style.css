@@ -9,41 +9,90 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;  
-  background-color: grey;
+  background-color: white;
 }
 
 #application {
 	height: 626px;
 	width: 800px;
-  border: solid black 1px;
 	display: flex;
   flex-direction: column;
+  color: #e2dbd1;
+}
+
+#multiplication-icon {
+  display: flex;
+  justify-content: center;
+}
+
+#heading {
+  display: flex;
+  flex-direction: column;
+  height: 200px;
+  width: 100%;
 }
 
 #name {
-  height: 100px;
+  height: 80px;
   width: 100%;
-  border: solid black 1px;
   font-size: 50px;
-  color: red;
+  color: #e61a1a;
   text-align: center;
+  font-family: Chalkduster, fantasy, sans-serif;
+  font-weight: bold;
+}
+
+#icon {
+  height: 100px;
+  width: 100px;
+}
+
+.activity-icon {
+  height: 100px;
+  width: 100px;
+
 }
 
 .activity {
-  height: 200px;
-  width: 33%;
-  border: solid black 1px;
+  display: flex;
+  flex-direction: column;
+  height: 250px;
+  width: 200px;
   font-size: 40px;
-  color: black;
   text-align: center;
+  font-family: Marker Felt, fantasy, sans-serif;
+  font-style: normal;
+  border-radius: 30px;
+  margin: 30px;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
+.activity:hover {
+  background-color: #e4e8e4;
+}
 
+#explore {
+  color: #1c60ac;
+}
+
+#learn {
+  color: #ff9e13
+}
+
+#play {
+  color: #066f01;
+}
+
+#activities-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+}
 
 #title-bar {
 	height: 100px;
   width: 100%;
-	border: solid black 1px;
 }
 
 #back {
@@ -56,16 +105,16 @@ body {
 #frame {
   height: 100%;
   width: 100%;
-  border: solid red 1px;
   display: flex;
 }
 
 #game {
-  border: solid black 1px;
   position: relative;
   display: flex;
-  height: 500px;
-  width: 500px;
+  height: 495px;
+  width: 495px;
+  color: #000000;
+  background-color: #e4e8e4;
 }
 
 #game-vertical {
@@ -81,17 +130,17 @@ body {
 .side-bar {
   height: 100%;
   width: 300px;
-  border: solid black 1px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;  
+  justify-content: space-around;
+  align-items: flex-start; 
+  padding-left: 10px; 
 }
 
 #rectangle {
   display: flex;
   align-content: flex-start;
-  outline: solid blue 5px;
+  outline: solid #066f01 5px;
   left: 50px;
   position: absolute;
   z-index: 1;
@@ -112,17 +161,17 @@ body {
 
 .line-horizontal {
   height: 1px;
-  border: solid green 1px;
+  border: solid white 1px;
 }
 
 .line-vertical {
   width: 1px;
-  border: solid green 1px;
+  border: solid white 1px;
 
 }
 
 .dot {
-  border: solid red 8px;
+  border: solid white 8px;
   border-radius: 8px;
   width: 4px;
   position: absolute;
@@ -153,39 +202,85 @@ body {
 }
 
 #equation-explore {
-  height: 40px;
-  width: 140px;
-  margin: 10px;
+  height: 50px;
+  width: 295px;
   display: flex;
-  border: solid black 1px;
 }
 
 #factors {
-  height: 30px;
-  width: 90px;
-  font-size: 20px;
-  color: black;
-  text-align: center;
+  height: 50px;
+  width: 170px;
+  font-family: Marker Felt, fantasy, sans-serif;
+  font-style: normal;
+  font-size: 43px;
+  color: #e61a1a;
+  text-align: left;
+  vertical-align: text-bottom;
+  line-height: 55px;
+}
+
+#side-buttons-container {
+  height: 250px;
+  width: 180px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 #squares {
-  height: 40px;
-  width: 80px;
-  font-size: 20px;
-  color: green;
+  height: 60px;
+  width: 60px;
   margin: 10px;
 }
 
-#multiplication {
-  height: 30px;
-  width: 50px;
-  font-size: 20px;
+.multiplication {
+  text-align: center;
+  vertical-align: text-bottom;
+  line-height: 55px;  
+  height: 50px;
+  width: 90px;
+  font-size: 43px;
+  font-family: Marker Felt, fantasy, sans-serif;
+  font-style: normal;
+  background-color: #e4e8e4;
+  border: 0px;
+  padding: 0px;
+  color: #757575;
+  border-radius: 8px;
 }
 
-#multiplication-learn {
-  height: 30px;
+.multiplication:hover {
+  border: solid 2px #e61a1a;
+}
+
+.side-bar-icon {
+  height: 50px;
   width: 50px;
-  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#sides-icon {
+  height: 80px;
+  width: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent; 
+  border: transparent;
+}
+
+.side-button-container:hover {
+  background-color: #e4e8e4;
+  border-radius: 5px;
+  border: solid white 1px;
 }
 
 #sides-button {
@@ -193,45 +288,38 @@ body {
   width: 80px;
   font-size: 20px;
   color: blue;
-  margin: 10px;
-}
-
-#counting-button {
-  height: 40px;
-  width: 40px;
-  font-size: 20px;
-  color: blue;
-  margin: 10px;
 }
 
 .number-container {
+  text-align: center;
+  vertical-align: middle;
+  line-height: 50px;  
   font-size: 30px;
-  color: black;
+  color: #757575;
+  font-family: Marker Felt, fantasy, sans-serif;
 }
 
 #horizontal-div-button {
   height: 60px;
-  width: 120px;
+  width: 60px;
   font-size: 20px;
   color: blue;
   margin: 10px;
-  border: solid blue 1px;
 }
 
 #vertical-div-button {
   height: 60px;
-  width: 120px;
+  width: 60px;
   font-size: 20px;
   color: blue;
   margin: 10px;
-  border: solid blue 1px;
 }
 
 .side {
   height: 20px;
-  width: 20px;
   font-size: 20px;
-  color: blue;
+  font-family: American Typewriter, light, condenced;
+  color: #066f01;
   position: absolute;
 }
 
@@ -246,39 +334,55 @@ body {
   width: 40px;
 }
 
+#back {
+  background: transparent; 
+  border: transparent;
+  height: 50px;
+  width: 50px;
+}
+
+#back-icon {
+  height: 50px;
+  width: 50px;
+}
+
 .line-horizontal-rec {
-  border: solid blue 2px;
+  border: solid #066f01 2px;
   height: 1px;
 }
 
 .line-vertical-rec {
-  border: solid blue 2px;
+  border: solid #066f01 2px;
   width: 1px;
 }
 
 .result-box {
   height: 40px;
   width: 40px;
-  border: solid red 1px;
   display: flex;
   position: absolute;
-  font-size: 20px;
+  font-size: 30px;
+  font-family: Marker Felt, fantasy, sans-serif;
+  font-style: normal;
+  text-align: center;
 }
 
 .done-rec {
-  border: solid green 5px;
+  border: solid #066f01 5px;
   position: absolute;
 //  background-color: rgba(30, 130, 76, 1);
 //  opacity: 0.3;
 }
 
 .comp-rec {
-  border: solid red 5px;
+  border: solid #1c60ac 5px;
   position: absolute;
+  color: #1c60ac;
 }
 
 .all-rec {
-
+  text-indent: 5px;
+  padding-top: 5px;
 }
 
 /*#equation-play {
@@ -312,40 +416,160 @@ body {
 }*/
 
 #ok {
-  height:50px;
-  width: 50px;
-  border-radius: 50px;
-  font-size: 20px;
-  color: white;
-  margin: 10px;
-  background-color: green
+  background: transparent; 
+  border: transparent;
+  padding: 0px;
 }
-
-/*#feedback {
-  height: 200px;
-  width: 250px;
-  border: solid black 1px;
-  margin: 10px;
-}*/
 
 #equation-container {
   display: flex;
   flex-direction: row;
-  height: 60px;
-  width: 220px;
-  border: solid green 1px;
+  height: 50px;
+  width: 300px;
   font-size: 30px;
+  justify-content: flex-start;
+  padding-left: 12px;
+}
+
+#feedback-container {
+  height: 75px;
+  width: 300px;
+  display: flex;
+  flex-direction: row;
+  padding-left: 12px;
+}
+.feedback-icon {
+  width: 70px;
+  height: 70px;
 }
 
 #hand {
-  border: solid green 8px;
-  border-radius: 8px;
-  width: 4px;
+  height: 25px;
+  width: 25px;
   position: absolute;
   top: -8px;
   left: 50%;
   z-index: 1;
 }
 
+.side-button-container {
+  height: 80px;
+  width: 80px;
+  display: flex;
+  justify-content: center;
+  border-radius: 5px;
+  border: solid white 1px;
+}
 
+.game-over {
+  font-size: 27px;
+}
+
+#game-over {
+  height: 70px;
+  font-family: Chalkboard;
+  color: #e61a1a;
+  text-align: center;
+  font-size: 40px;
+  font-weight: bold;
+}
+
+#game-over-screen {
+  height: 270px;
+  width: 360px;
+  background-color: white;
+  color: black;
+  font-size: 50px;
+  position: absolute;
+  left: 67.5px;
+  top: 112.5px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.8;
+}
+
+#your-score-container {
+  height: 50px;
+  width: 310px;
+  display: flex;
+}
+
+#your-score-text {
+  height: 50px;
+  width: 220px;
+  font-family: Marker Felt, fantasy, sans-serif;
+}
+
+#your-score-number {
+  height: 50px;
+  width: 50px;
+  font-family: Marker Felt, fantasy, sans-serif;
+}
+
+#computers-score-container {
+  height: 50px;
+  width: 310px;
+  display: flex;
+}
+
+#computers-score-text {
+  height: 50px;
+  width: 220px;
+  font-family: Marker Felt, fantasy, sans-serif;
+}
+
+#computers-score-number {
+  height: 50px;
+  width: 50px;
+  font-family: Marker Felt, fantasy, sans-serif;
+}
+
+#play-again-container {
+  display: flex;
+  align-items: center;
+}
+
+#play-again {
+  height: 50px;
+  color: #066f01;
+  font-size: 35px;
+  font-family: Marker Felt, fantasy, sans-serif;
+}
+
+#play-again-dice {
+  height: 70px;
+  width: 70px;
+}
+
+#instruction {
+  width: 400px;
+  background-color: white;
+  position: absolute;
+  left: 67.5px;
+  top: 112.5px;
+  z-index: 2;
+  opacity: 0.8;
+}
+
+#x {
+  height: 30px;
+  width: 30px;
+  z-index: 3;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+
+#instruction-text {
+  width: 400px;
+  color: #626262;
+  font-size: 25px;
+  font-family: American Typewriter;
+  text-align: justify;
+  line-height: 1.5;
+  padding: 20px;
+}
 

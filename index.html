@@ -11,29 +11,44 @@
   </head>
   <body onload="showHomeScreen()">
     <div id="application">
-      <div id="name">
-        Multiplication
+      <div id="heading">
+        <div id="name">
+          MULTIPLICATION
+        </div>
+        <div id="multiplication-icon">
+          <img id="icon" src="multiplication icon.png"/>
+        </div>
       </div>
       <div id="activities-container">
         <button id="explore" class="activity">
+          <img id="magnifying-glass-icon" src="magnifying glass icon.png" class="activity-icon"/>
           Explore
         </button>
         <button id="learn" class="activity">
+          <img id="star-icon" src="star icon.png" class="activity-icon"/>
           Learn
         </button>
         <button id="play" class="activity">
+          <img id="dice-icon" src="dice icon.png" class="activity-icon"/>
           Play
         </button>
       </div>
       <div id="title-bar">
         <button id="back">
-          <- back
+          <img id="back-icon" src="back.png"/>
         </button>
       </div>
       <div id="frame">
         <div id=game>
+          <div id="instruction">
+            <img id="x" scr="iks.png"/>
+            <div id="instruction-text">
+            </div>
+          </div>
           <div id="rectangle">
-            <div id="hand"></div>
+            <div id="hand">
+              <img id="hand" src="hand.png"/>
+            </div>
             <div id="dot-top-left" class="dot"></div>
             <div id="dot-top-right" class="dot"></div>
             <div id="dot-bottom-left" class="dot"></div>
@@ -55,55 +70,87 @@
           </div>
           <div id="right-side" class="side">
           </div>
+          <div id="game-over-screen">
+            <div id="game-over" class="game-over">
+              GAME OVER
+            </div>
+            <div id="your-score-container">
+              <div id="your-score-text" class="game-over">
+                Your score:
+              </div>
+              <div id="your-score-number" class="game-over">
+              </div>
+            </div>
+            <div id="computers-score-container">
+              <div id="computers-score-text" class="game-over">
+                Computer's score:
+              </div>
+              <div id="computers-score-number" class="game-over">
+              </div>
+            </div>
+            <button id="play-again-container">
+              <div id="play-again" class="game-over">
+              Play again
+              </div>
+              <img id="play-again-dice" src="dice icon.png"/>
+            </button>
+          </div>
         </div>
         <div id="side-bar-explore" class="side-bar">
           <div id="equation-container">
             <div id="equation-explore" class= "equation">
               <div id="factors">
               </div>
-              <button id="multiplication">
+              <button id="multiplication" class="multiplication">
               </button>
-              <input id ="multiplication-learn">
+              <input id ="multiplication-learn" class="multiplication">
               </input>
             </div>
+          </div>
+          <div id="feedback-container">
             <button id="ok">
-              OK
+              <img id="ok" src="ok.png" class="feedback-icon">
             </button>
+            <div id="right">
+              <img id="right" src="right.png" class="feedback-icon">
+            </div>
+            <div id="wrong">
+              <img id="wrong" src="wrong.png" class="feedback-icon">
+            </div>
           </div>
-          <button id="squares">
-            squares
-          </button>
-          <button id="sides-button">
-            sides
-          </button>
-          <button id="mushroom-button">
-            <img id="mushroom-icon" src="mushroom.img" class="mushroom-icon"/>
-          </button>
-          <button id="counting-button">
-            1
-          </button>
-          <button id="horizontal-div-button">
-            horizontal lines
-          </button>
-          <button id="vertical-div-button">
-            vertical lines
-          </button>
+          <div id="side-buttons-container">
+            <div id="container1" class="side-button-container">
+              <button id="squares" class="button">
+                <img id="squares-icon" src="squares icon.png" class="side-bar-icon"/>
+              </button>
+            </div>
+            <div id="container2" class="side-button-container">
+              <button id="sides-button" class="button">
+                <img id="sides-icon" src="sides icon.png"/>
+              </button>
+            </div>
+            <div id="container3" class="side-button-container">
+              <button id="mushroom-button" class="button">
+                <img id="mushroom-icon" src="new mushroom.png" class="mushroom-icon"/>
+              </button>
+            </div>
+            <div id="container4" class="side-button-container">
+              <button id="counting-button" class="button">
+                <img id="counting-icon" src="counting icon.png" class="side-bar-icon"/>
+              </button>
+            </div>
+            <div id="container5" class="side-button-container">
+              <button id="horizontal-div-button" class="button">
+                <img id="horizontal-lines-icon" src="horizontal lines icon.png" class="side-bar-icon"/>
+              </button>
+            </div>
+            <div id="container6" class="side-button-container">
+              <button id="vertical-div-button" class="button">
+                <img id="vertical-lines-icon" src="vertical lines icon.png" class="side-bar-icon"/>
+              </button>
+            </div>
+          </div>
         </div>
-<!--         <div id="side-bar-play" class="side-bar">
-          <div id="equation-play">
-            <div id="factors-play">
-            </div>
-            <div id="result">
-              <div id="equals">
-              = 
-              </div>
-              <input id="multiplication-play">
-              </input>
-            </div>
-          </div>
-          <div id="feedback">
-          </div>
-        </div> -->
       </div>
     </div>
   </body>

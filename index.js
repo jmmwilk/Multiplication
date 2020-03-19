@@ -1,3 +1,18 @@
+// zeby sie samo klikalo na input
+// zmiana kierunku numerow?
+// komputer nie wstawia prostokata chociaz moze (odwrocic) (czasem wstawia czasem nie?)
+
+// Alek:
+// nie dziala kropka
+// pozycja lapki i dziwnie sie zachowuje jak sie nia rusza
+// kropki jakos sa malo czule
+// nie chce zeby sie zaznaczaly grzybki
+// wykasowac klikalnosc buttons w play ktore maja display none
+// nie wstawiaja sie grzybki i 1 na poczatku w prostokacie (jak jest kwadracikiem, 
+//    potem jak sie zwiekszy izmniejszy juz tak)
+// nie wyswietla sie obrazek X
+// brzydki input bo robi niebieską ramkę
+
 'use strict';
 
 let squareSize = 45;
@@ -13,11 +28,13 @@ let factor1;
 let factor2;
 let okCount = false;
 let view;
+let yourScore = 0;
+let computersScore = 0;
 
 function showHomeScreen () {
-	let name = document.getElementById('name');
+	let heading = document.getElementById('heading');
 	let activitiesContainer = document.getElementById('activities-container');
-	name.style.display = '';
+	heading.style.display = '';
 	activitiesContainer.style.display = '';
 	let titleBar = document.getElementById('title-bar');
 	let frame = document.getElementById('frame');
@@ -34,9 +51,9 @@ function showHomeScreen () {
 }
 
 function hideHomeScreen () {
-	let name = document.getElementById('name');
+	let heading = document.getElementById('heading');
 	let activitiesContainer = document.getElementById('activities-container');
-	name.style.display = 'none';
+	heading.style.display = 'none';
 	activitiesContainer.style.display = 'none';
 }
 
@@ -55,10 +72,14 @@ function showExploreScreen () {
 	sideBarExplore.style.display = '';
 }
 
+function showRectangle () {
+	let rectangle = document.getElementById('rectangle');
+	rectangle.style.display = '';
+}
+
 function cleanUp () {
 	removeMushrooms ();
 	hideMushrooms();
-	removeSidesNumbers ();
 	hideSides ();
 	removeHLines ()
 	hideHorizontalDivision ();
@@ -72,16 +93,92 @@ function cleanUp () {
 	createGame ();
 	makeRectangle ();
 	goBack();
+	removeAllRecs ();
+	showRectangle ();
+	enableRectangle ();
+	hideFeedback ();
+	hideOk();
+	putSidesNumbers ();	
+	placeSidesNumbers ();
+	hideGameOverScreen ();
+	fillInstruction ();
+	displayInstruction();
+	enableX ();
+	changeBackFactorsColor ();
+}
+function hideGameOverScreen () {
+	let gameOverScreen = document.getElementById('game-over-screen');
+	gameOverScreen.style.display = 'none';
+}
+
+function displayGameOverScreen () {
+	let gameOverScreen = document.getElementById('game-over-screen');
+	gameOverScreen.style.display = '';
+}
+
+function putFinalScores () {
+	console.log('yourScore');
+	let yourScoreNumber = document.getElementById('your-score-number');
+	let computersScoreNumber = document.getElementById('computers-score-number');
+	yourScoreNumber.innerText = yourScore;
+	computersScoreNumber.innerText = computersScore;
+}
+
+function hideGameOver () {
+	let gameOver = document.getElementById('game-over');
+	gameOver.style.display = 'none';
+}
+
+
+function removeAllRecs () {
+	let allRecs = document.getElementsByClassName ('all-rec');
+	let game = document.getElementById('game');
+	Array.from(allRecs).forEach(function(allRec) {
+	game.removeChild(allRec);
+	})
+}
+
+function displayOk () {
+	let ok = document.getElementById('ok');
+	ok.style.display = '';
+}
+
+function hideOk () {
+	let ok = document.getElementById('ok');
+	ok.style.display = 'none';
+}
+
+function cleanUpExplore () {
+	let squares = document.getElementById('squares');
+	squares.style.display = '';
+	let sidesButton = document.getElementById('sides-button');
+	sidesButton.style.display = '';
+	let countingButton = document.getElementById('counting-button');
+	countingButton.style.display = '';
+	let multiplication = document.getElementById('multiplication');
+	multiplication.style.display = '';
+}
+
+function cleanUpLearn () {
+	let squares = document.getElementById('squares');
+	squares.style.display = '';
+	let sidesButton = document.getElementById('sides-button');
+	sidesButton.style.display = '';
+	let countingButton = document.getElementById('counting-button');
+	countingButton.style.display = '';
+	let multiplication = document.getElementById('multiplication');
+	multiplication.style.display = '';
 }
 
 function startExplore () {
+	view = 'explore';
 	cleanUp ();
+	cleanUpExplore ();
 	displayEquation ();
-	displayButtons ();
-	let ok = document.getElementById('ok');
-	ok.style.display = 'none';
+	enableButtons ();
 	let rectangle = document.getElementById('rectangle');
 	let frame = document.getElementById('frame');
+	enableHand ();
 	let dots = document.getElementsByClassName('dot');
 	Array.from(dots).forEach(function(dot) {
 		dot.onmousedown = function () {
@@ -99,7 +196,8 @@ function startExplore () {
 			frame.onmouseup = function () {
 				frame.onmousemove = undefined;
 				frame.onmouseup = undefined;
-				adjustRectangle (lastPosition, lastDimensions);
+				adjustRectangle ();
+				adjustRectangleDot ();
 				resizeRecHorizontal ();
 				resizeRecVertical ();
 				displayEquation ();
@@ -114,9 +212,117 @@ function startExplore () {
 			}
 		}
 	})
+}
+
+function startLearn () {
+	view = 'learn';
+	cleanUp ();
+	cleanUpLearn ();
+	hideMultiplicationBox ();
+	enableButtons ();
+	newExercise ();
+	enableHand ();
+	let multiplicationLearn = document.getElementById('multiplication-learn');
+	multiplicationLearn.onmousedown = hideFeedback;
+	multiplicationLearn.oninput = displayOk;
+	let dots = document.getElementsByClassName('dot');
+	Array.from(dots).forEach(function(dot) {
+		dot.onmousedown = function () {
+			frame.onmousemove = function(event){
+				resizeRectangle(event, dot);
+				resizeRecHorizontal ();
+				resizeRecVertical ();
+				addMushroomsInRectangle ();
+				placeSidesNumbers ();
+				putSidesNumbers ();
+				horizontalDivision (dot);
+				verticalDivision (dot);
+				createNumbersContainers ();
+				hideFeedback ();
+
+			};
+			frame.onmouseup = function () {
+				frame.onmousemove = undefined;
+				frame.onmouseup = undefined;
+				adjustRectangle ();
+				adjustRectangleDot ();
+				resizeRecHorizontal ();
+				resizeRecVertical ();
+				placeSidesNumbers ();
+				putSidesNumbers ();
+				addMushroomsInRectangle ();
+				horizontalDivision (dot);
+				verticalDivision (dot);
+				createNumbersContainers ();
+				countMushrooms ();
+				displayOk ();
+			}
+		}
+	})
+}
+
+function startPlay () {
+	view = 'play';
+	cleanUp ();
+	yourScore = 0;
+	computersScore = 0;
+	hideMultiplicationBox ();
+	enableButtons ();
+	let squares = document.getElementById('squares');
+	squares.style.display = 'none';
+	let sidesButton = document.getElementById('sides-button');
+	sidesButton.style.display = 'none';
+	let countingButton = document.getElementById('counting-button');
+	countingButton.style.display = 'none';
+	countingButton.onmouseover = function () {countingButton.style.backgroundColor = 'white'};
+	mushroomsShown = true;
+	let multiplicationLearn = document.getElementById('multiplication-learn');
+	multiplicationLearn.onmousedown = hideFeedback;
+	multiplicationLearn.oninput = displayOk;
+	displayOk ();
+	newExercise ();
+	enableHand ();
+	enablePlayAgain ();
+	let dots = document.getElementsByClassName('dot');
+	Array.from(dots).forEach(function(dot) {
+		dot.onmousedown = function () {
+			let lastPosition = rectanglePosition();
+			let lastDimensions = rectangleDimensions();
+			frame.onmousemove = function(event){
+				resizeRectangle(event, dot);
+				resizeRecHorizontal ();
+				resizeRecVertical ();
+				addMushroomsInRectangle ();
+				horizontalDivision (dot);
+				verticalDivision (dot);
+				hideFeedback();
+			};
+			frame.onmouseup = function () {
+				frame.onmousemove = undefined;
+				frame.onmouseup = undefined;
+				adjustRectangle (lastPosition, lastDimensions);
+				adjustRectangleDot ();
+				resizeRecHorizontal ();
+				resizeRecVertical ();
+				addMushroomsInRectangle ();
+				horizontalDivision (dot);
+				verticalDivision (dot);
+				displayOk ();
+			}
+		}
+	})
+}
+
+function enablePlayAgain () {
+	let playAgain = document.getElementById('play-again-container');
+	playAgain.onclick = startPlay;
+}
+
+function enableHand () {
 	let hand = document.getElementById('hand');
 	hand.onmousedown = function () {
 		let lastPosition = rectanglePosition();
+		let lastDimensions = rectangleDimensions();
 		frame.onmousemove = function (event) {
 			moveRectangle (event)
 		};
@@ -124,28 +330,29 @@ function startExplore () {
 			frame.onmousemove = undefined;
 			frame.onmouseup = undefined;
 			adjustRectangle (lastPosition, lastDimensions);
-			putRectangleInNewPosition (lastPosition);
+			adjustRectangleHand (lastPosition)
 		}
 	}
 }
 
-function displayButtons () {
-	let squares = document.getElementById('squares');
-	squares.onclick = displaySqaures;
-
+function enableButtons () {
+	let multiplication = document.getElementById('multiplication');
 	multiplication.onclick = displayMultiplication;
 
 	let mushroomButton = document.getElementById('mushroom-button');
 	mushroomButton.onclick = displayMushrooms;
-
-	let sidesButton = document.getElementById('sides-button');
-	sidesButton.onclick = displaySides;
 
 	let horizontalDivButton = document.getElementById('horizontal-div-button');
 	horizontalDivButton.onclick = displayHorizontalDivision;
 
 	let verticalDivButton = document.getElementById('vertical-div-button');
 	verticalDivButton.onclick = displayVerticalDivision;
+
+	let squares = document.getElementById('squares');
+	squares.onclick = displaySqaures;
+
+	let sidesButton = document.getElementById('sides-button');
+	sidesButton.onclick = displaySides;
 
 	let countingButton = document.getElementById('counting-button');
 	countingButton.onclick = displayNumbersContainers;
@@ -262,20 +469,20 @@ function placeSidesNumbers () {
 	let bottomSide = document.getElementById('bottom-side');
 	let leftSide = document.getElementById('left-side');
 	let rightSide = document.getElementById('right-side');
-	topSide.style.top = parseInt(rectangle.style.top) - (0.5 * squareSize) + 'px';
-	topSide.style.left = parseInt(rectangle.style.left) + (0.5 * parseInt(rectangle.style.width)) - 7 + 'px';
-	bottomSide.style.top = parseInt(rectangle.style.top) + parseInt(rectangle.style.height) + 'px';
-	bottomSide.style.left = parseInt(rectangle.style.left) + (0.5 * parseInt(rectangle.style.width)) - 7 + 'px';
+	topSide.style.top = parseInt(rectangle.style.top) - (0.5 * squareSize) - 6 + 'px';
+	topSide.style.left = parseInt(rectangle.style.left) + (0.5 * parseInt(rectangle.style.width)) -5 + 'px';
+	bottomSide.style.top = parseInt(rectangle.style.top) + parseInt(rectangle.style.height) + 6 + 'px';
+	bottomSide.style.left = parseInt(rectangle.style.left) + (0.5 * parseInt(rectangle.style.width)) -5 + 'px';
 	leftSide.style.top = parseInt(rectangle.style.top) + 0.5 * parseInt(rectangle.style.height) - 10 + 'px';
 	leftSide.style.left = parseInt(rectangle.style.left) - (0.5 * squareSize) + 'px';
 	rightSide.style.top = parseInt(rectangle.style.top) + 0.5 * parseInt(rectangle.style.height) - 10 + 'px';
-	rightSide.style.left = parseInt(rectangle.style.left) + parseInt(rectangle.style.width) + 5 + 'px';
+	rightSide.style.left = parseInt(rectangle.style.left) + parseInt(rectangle.style.width) + 10 + 'px';
 }
 
 function removeSidesNumbers () {
-	let rectangle = document.getElementById('rectangle');
-	let sides = document.getElementsByClassName('sides')
-	Array.from(sides).forEach(function (side) {rectangle.removeChild(side)});
+	let game = document.getElementById('game');
+	let sides = document.getElementsByClassName('side');
+	Array.from(sides).forEach(function (side) {game.removeChild(side)});
 }
 
 function resizeRectangle (event, dot) {
@@ -312,15 +519,15 @@ function resizeRectangle (event, dot) {
 function resizeRecHorizontal () {
 	let rectangleHorizontal = document.getElementById('rectangle-horizontal');
 	let rectangle = document.getElementById('rectangle');
-	rectangleHorizontal.style.height = parseInt(rectangle.style.height) - 4 + 'px';
-	rectangleHorizontal.style.width = parseInt(rectangle.style.width) - 4 + 'px';
+	rectangleHorizontal.style.height = parseInt(rectangle.style.height) + 'px';
+	rectangleHorizontal.style.width = parseInt(rectangle.style.width) + 'px';
 }
 
 function resizeRecVertical () {
 	let rectangle = document.getElementById('rectangle');
 	let rectangleVertical = document.getElementById('rectangle-vertical');
-	rectangleVertical.style.height = parseInt(rectangle.style.height) - 4 + 'px';
-	rectangleVertical.style.width = parseInt(rectangle.style.width) - 4 + 'px';
+	rectangleVertical.style.height = parseInt(rectangle.style.height) + 'px';
+	rectangleVertical.style.width = parseInt(rectangle.style.width) + 'px';
 }
 
 function rectanglePosition (event) {
@@ -387,29 +594,35 @@ function adjustRectangle (lastPosition, lastDimensions) {
 	if (parseInt(rectangle.style.left)< 0.5 * squareSize) {
 		rectangle.style.left = 0.5 * squareSize + 'px';
 	}
-	if (parseInt(rectangle.style.right)> (gameSize + 0.5) * squareSize) {
-		rectangle.style.right = (gameSize + 0.5) * squareSize + 'px';
-	}
-	if (parseInt(rectangle.style.bottom)> (gameSize + 0.5) * squareSize) {
-		rectangle.style.bottom = (gameSize + 0.5) * squareSize + 'px';
-	}
-
-	if (parseInt(rectangle.style.width)> gameSize * squareSize) {
-			rectangle.style.width = gameSize * squareSize + 'px';
-	}
-	if (parseInt(rectangle.style.height)> gameSize * squareSize) {
-			rectangle.style.height = gameSize * squareSize + 'px';
-	}
 	let isNewSpaceFree = isSpaceFree ();
 	putRectangleInNewPosition (lastPosition, isNewSpaceFree);
 	adjustRectangleDimensions (lastDimensions, isNewSpaceFree);
+}
+
+function adjustRectangleDot () {
+	let rectangle = document.getElementById('rectangle');
+	if (parseInt(rectangle.style.left) + parseInt(rectangle.style.width) > (gameSize + 0.5) * squareSize) {
+		rectangle.style.width = (gameSize + 0.5) * squareSize - parseInt(rectangle.style.left) + 'px';
+	}
+	if (parseInt(rectangle.style.top) + parseInt(rectangle.style.height) > (gameSize + 0.5) * squareSize) {
+		rectangle.style.height = (gameSize + 0.5) * squareSize - parseInt(rectangle.style.top) + 'px';
+	}
+}
+
+function adjustRectangleHand (lastPosition) {
+	let rectangle = document.getElementById('rectangle');
+	if (parseInt(rectangle.style.left) + parseInt(rectangle.style.width) > (gameSize + 0.5) * squareSize
+		|| parseInt(rectangle.style.top) + parseInt(rectangle.style.height) > (gameSize + 0.5) * squareSize) {
+		rectangle.style.top = lastPosition.top + 'px';
+		rectangle.style.left = lastPosition.left + 'px';
+	}
 }
 
 function displayEquation () {
 	let factors = document.getElementById('factors');
 	let factor1 = parseInt(rectangle.style.height)/squareSize;
 	let factor2 = parseInt(rectangle.style.width)/squareSize;
-	factors.innerText = factor1 + ' x ' + factor2 + ' = ';
+	factors.innerText = factor1 + ' × ' + factor2 + ' = ';
 }
 
 function createLines (parentId, margin, lineClass) {
@@ -417,12 +630,11 @@ function createLines (parentId, margin, lineClass) {
 		let line = document.createElement("div");
 		line.className = lineClass;
 		if (i==0) {
-			line.style[margin] = 0.5 * squareSize - 2 + 'px';
+			line.style[margin] = 0.5 * squareSize -1 + 'px';
 		} else {
-			line.style[margin] = squareSize - 2 + 'px';
+			line.style[margin] = squareSize -2 + 'px';
 
 		}
-
 		let parent = document.getElementById(parentId);
 		parent.appendChild(line);
 	}
@@ -438,8 +650,8 @@ function makeRectangle () {
 	let rectangle = document.getElementById('rectangle');
 	rectangle.style.height = squareSize + 'px';
 	rectangle.style.width = squareSize + 'px';
-	rectangle.style.left = 0.5 * squareSize - 1 + 'px';
-	rectangle.style.top = 0.5 * squareSize - 1 + 'px';
+	rectangle.style.left = 0.5 * squareSize + 'px';
+	rectangle.style.top = 0.5 * squareSize + 'px';
 }
 
 
@@ -503,7 +715,7 @@ function addMushroomsInRectangle () {
 	for (let i=0; i<width; i++) {
 		for (let x=0; x<height; x++) {
 			const mushroom = addImage('rectangle');
-			mushroom.src = 'mushroom.img';
+			mushroom.src = 'new mushroom.png';
 			mushroom.className = 'mushroom';
 			mushroom.style.position = 'absolute';
 			mushroom.style.top = (x) * squareSize + 'px';
@@ -534,6 +746,7 @@ function displayMushrooms () {
 	Array.from(mushrooms).forEach(function (mushroom) {
 		if (mushroomsShown == false) {
 			mushroom.style.display = 'block';
+			hideNumbersContainers();
 		} else {
 			mushroom.style.display = 'none';
 		}
@@ -572,12 +785,13 @@ function horizontalDivision (dot) {
 	removeHLines ();
 	let rectangle = document.getElementById('rectangle');
 	let rectangleHorizontal = document.getElementById('rectangle-horizontal');
-	let width = Math.floor(parseInt(rectangle.style.width) / squareSize);
-	let height = Math.floor(parseInt(rectangle.style.height) / squareSize);
+	let width = (parseInt(rectangle.style.width) / squareSize);
+	let height = (parseInt(rectangle.style.height) / squareSize);
 	for (let i=0; i<height - 1; i++) {
 		let line = document.createElement("div");
 		line.className = 'line-horizontal-rec';
 		line.style.width = height * squareSize;
+
 		rectangleHorizontal.appendChild(line);
 		if (dot.id == 'dot-bottom-left' || dot.id == 'dot-bottom-right') {
 			rectangleHorizontal.style.flexDirection = 'column';
@@ -698,114 +912,15 @@ function showLearnScreen () {
 	sideBarExplore.style.display = '';
 }
 
-function startLearn () {
-	cleanUp ();
-	hideMultiplicationBox ();
-	displayButtons ();
-	let ok = document.getElementById('ok');
-	ok.style.display = '';
-	newExercise ();
-
-	let dots = document.getElementsByClassName('dot');
-	Array.from(dots).forEach(function(dot) {
-		dot.onmousedown = function () {
-			frame.onmousemove = function(event){
-				resizeRectangle(event, dot);
-				resizeRecHorizontal ();
-				resizeRecVertical ();
-				addMushroomsInRectangle ();
-				placeSidesNumbers ();
-				putSidesNumbers ();
-				horizontalDivision (dot);
-				verticalDivision (dot);
-				createNumbersContainers ();
-			};
-			frame.onmouseup = function () {
-				frame.onmousemove = undefined;
-				frame.onmouseup = undefined;
-				adjustRectangle ();
-				resizeRecHorizontal ();
-				resizeRecVertical ();
-				placeSidesNumbers ();
-				putSidesNumbers ();
-				addMushroomsInRectangle ();
-				horizontalDivision (dot);
-				verticalDivision (dot);
-				createNumbersContainers ();
-				countMushrooms ();
-			}
-		}
-	})
-	let hand = document.getElementById('hand');
-	hand.onmousedown = function () {
-		frame.onmousemove = function (event) {
-			moveRectangle (event)
-		};
-		frame.onmouseup = function () {
-			frame.onmousemove = undefined;
-			frame.onmouseup = undefined;
-			adjustRectangle ();
-		}
-	}
-}
-
 function goToPlay () {
 	hideHomeScreen ();
 	showPlayScreen();
 	startPlay();
 }
 
-function startPlay () {
-	cleanUp ();
-	view = 'play';
-	hideMultiplicationBox ();
-	displayButtons ();
-	mushroomsShown = true;
-	let ok = document.getElementById('ok');
-	ok.style.display = '';
-	let lastPosition;
-	let lastDimensions;
-	newExercise ();
-
-	let dots = document.getElementsByClassName('dot');
-	Array.from(dots).forEach(function(dot) {
-		dot.onmousedown = function () {
-			lastPosition = rectanglePosition();
-			lastDimensions = rectangleDimensions();
-			frame.onmousemove = function(event){
-				resizeRectangle(event, dot);
-				resizeRecHorizontal ();
-				resizeRecVertical ();
-				addMushroomsInRectangle ();
-			};
-			frame.onmouseup = function () {
-				frame.onmousemove = undefined;
-				frame.onmouseup = undefined;
-				adjustRectangle (lastPosition, lastDimensions);
-				resizeRecHorizontal ();
-				resizeRecVertical ();
-				addMushroomsInRectangle ();
-			}
-		}
-	})
-	let hand = document.getElementById('hand');
-	hand.onmousedown = function () {
-		lastPosition = rectanglePosition();
-		lastDimensions = rectangleDimensions();
-		frame.onmousemove = function (event) {
-			moveRectangle (event)
-		};
-		frame.onmouseup = function (event) {
-			frame.onmousemove = undefined;
-			frame.onmouseup = undefined;
-			adjustRectangle (lastPosition, lastDimensions);
-		}
-	}
-}
-
 function generateFactors () {
-	let factor1 =  Math.floor (Math.random () * 5) + 1;
-	let factor2 =  Math.floor (Math.random () * 5) + 1;
+	let factor1 =  Math.floor (Math.random () * 10) + 1;
+	let factor2 =  Math.floor (Math.random () * 10) + 1;
 	let factors = [factor1, factor2];
 	return factors;
 }
@@ -849,28 +964,158 @@ function displayResult () {
 	resultShown = !resultShown;
 }
 
+function displayRight () {
+	let right = document.getElementById('right');
+	right.style.display = '';
+}
+
+function displayWrong () {
+	let wrong = document.getElementById('wrong');
+	wrong.style.display = '';
+}
+
+function hideRectangle () {
+	let rectangle = document.getElementById('rectangle');
+	rectangle.style.display = 'none';
+}
+
+function displayRectangle () {
+	let rectangle = document.getElementById('rectangle');
+	rectangle.style.display = '';
+}
+
+function hideFactors () {
+	let factors = document.getElementById('factors');
+	factors.style.display = 'none';
+}
+
+function displayFactors () {
+	let factors = document.getElementById('factors');
+	factors.style.display = '';
+}
+
 function okClick (factors) {
-	if (okCount == false) {
-		check(factors)
-	}
+	hideFeedback ();
+	hideOk ();
 	if (okCount == true) {
 		if (checkAnswer (factors) == 'wellDone') {
-			if (view == 'play') {
-				removeMushrooms ();
-				createDoneRec (factors);
-				createCompRec ();
-			}
-			newExercise ();
-			createNewUserRectangle ();
+			displayRight ();
+			setTimeout (function () {correctDisplay(factors)}, 2000);
+			okCount = !okCount;
+			return
+		} else {
+			displayWrong ();
 		}
 	}
+	if (okCount == false) {
+		let isWellDone = check(factors);
+		if (isWellDone=='wellDone') {
+			disableRectangle();
+			displayRight ();
+			okCount = !okCount;
+			return
+		} else {
+			displayWrong ();
+		}
+	}	
+}
+
+function correctDisplay (factors) {
+	removeMushrooms ();
+	enableRectangle ();
+			if (view == 'play') {
+				hideRectangle ();
+ 				createDoneRec (factors);
+ 				setTimeout(hideFeedback, 1000);
+ 				setTimeout(hideMultiplicationLearn, 1000);
+ 				setTimeout(hideFactors, 1000);
+ 				let compFactors = generateFactors ();
+ 				setTimeout(displayFactors, 2000);
+ 				setTimeout(changeFactorsColor, 2000);
+ 				setTimeout (function() {fillFactors (compFactors)}, 2000);
+ 				if (isGameOver (compFactors) == true) {
+					setTimeout (gameOverDisplay, 4000);
+				} else {
+					setTimeout (function() {createCompRec (compFactors)}, 3000)
+					setTimeout(createNewUserRectangle, 4000);	
+ 					setTimeout(newExercise, 4000);
+ 					setTimeout(changeBackFactorsColor, 4000);
+				}
+ 			}
+}
+
+function newExercise () {
+	let factors = generateFactors ();
+	if (isGameOver (factors) == true) {
+		console.log ('koniec zabawy');
+		hideRectangle();
+		hideOk();
+		putFinalScores();
+		displayGameOverScreen ();
+	}
+	removeAnswer ();
+	hideMultiplicationLearn ();
+	fillFactors (factors);
+	let ok = document.getElementById('ok');
+	ok.onclick = function () {okClick (factors)};
+	hideFeedback();
+	removeNumbersContainers ();
+	removeHLines ();
+	removeVLines ();
+	putSidesNumbers ();
+	placeSidesNumbers ();
+	hideSides ();
+}
+
+function isGameOver (factors) {
+	let factor1 = factors[0];
+	let factor2 = factors[1];
+	let spaceIsFree;
+	for (let x=gameSize; x>=1; x--) {
+		for (let y=gameSize; y>=1; y--) {
+			spaceIsFree = isSpaceFreeForCompRec (factor1, factor2, x, y);
+			if (spaceIsFree == true) {
+		 		return false
+		 	}
+		}
+	}
+	if (spaceIsFree == false) {
+		spaceIsFree = checkRotatedRec (factors);
+		if (spaceIsFree == false) {
+			return true
+		}
+	}
+}
+
+function gameOverDisplay () {
+	hideRectangle ()
+	console.log('koniec');
+	putFinalScores();
+	displayGameOverScreen ();
+}
+
+function disableRectangle () {
+	let dots = document.getElementsByClassName('dot');
+	Array.from(dots).forEach(function(dot) {
+		dot.style.display = 'none';
+	})
+	let hand = document.getElementById('hand');
+	hand.style.display = 'none';
+}
+
+function enableRectangle () {
+	let dots = document.getElementsByClassName('dot');
+	Array.from(dots).forEach(function(dot) {
+		dot.style.display = '';
+	})
+	let hand = document.getElementById('hand');
+	hand.style.display = '';
 }
 
 function check (factors) {
 	if (checkSize (factors) == true) {
 		showMultiplicationLearn ();
 		addEquelsSign (factors);
-		okCount = !okCount;
 		return 'wellDone';
 	}
 }
@@ -880,18 +1125,8 @@ function checkAnswer (factors) {
 	let factor1 = factors[0];
 	let factor2 = factors[1];
 	if (multiplicationLearn.value == factor1*factor2) {
-		okCount = !okCount;
 		return 'wellDone';
 	}
-}
-
-function newExercise () {
-	removeAnswer ();
-	hideMultiplicationLearn ();
-	let factors = generateFactors ();
-	fillFactors (factors);
-	let ok = document.getElementById('ok');
-	ok.onclick = function () {okClick (factors)};
 }
 
 function removeAnswer () {
@@ -924,12 +1159,9 @@ function createResultBox (parent, factors) {
 	let factor2 = factors[1];
 	let result = document.createElement('div');
 	resultBox.appendChild(result)
+	console.log ('resultbox factors', factors)
 	result.innerText = factor1 * factor2;
 	resultBox.className = 'result-box';
-	const mushroom = document.createElement('img');
-    resultBox.appendChild(mushroom);
-	mushroom.src = 'mushroom.img';
-	mushroom.className = 'mushroom-icon';
 }
 
 function createDoneRec (factors) {
@@ -943,10 +1175,41 @@ function createDoneRec (factors) {
 	doneRec.style.top = rectangle.style.top;
 	doneRec.style.left = rectangle.style.left;
 	createResultBox (doneRec, factors);
+	yourScore = yourScore + (factors[0] * factors [1]);
+	console.log ('yourScore', yourScore);
 }
 
-function createCompRec () {
-	let factors = generateFactors ();
+function checkRotatedRec (factors) {
+	let factor1 = factors[1];
+	let factor2 = factors[0];
+	let allRecs = document.getElementsByClassName ('all-rec');
+	let spaceIsFree = true;
+	for (let x=gameSize; x>=1; x--) {
+		for (let y=gameSize; y>=1; y--) {
+			spaceIsFree = isSpaceFreeForCompRec (factor1, factor2, x, y);
+			console.log('spaceIsFreeeee', spaceIsFree)
+			if (spaceIsFree == true) {
+				console.log('da sie')
+		 		return spaceIsFree;
+		 	}
+		}
+	}
+	if (spaceIsFree == false) {
+		return spaceIsFree;
+	}
+}
+
+function changeFactorsColor() {
+	let factors = document.getElementById('factors');
+	factors.style.color = '#1c60ac';
+}
+
+function changeBackFactorsColor() {
+	let factors = document.getElementById('factors');
+	factors.style.color = '#e61a1a';
+}
+
+function createCompRec (factors) {
 	let factor1 = factors[0];
 	let factor2 = factors[1];
 	let compRec = document.createElement('div');
@@ -954,24 +1217,63 @@ function createCompRec () {
 	createResultBox (compRec, factors);
 	let game = document.getElementById('game');
 	game.appendChild(compRec);
-	compRec.style.height = factor1 * squareSize + 'px';
-	compRec.style.width = factor2 * squareSize + 'px';
 	let allRecs = document.getElementsByClassName ('all-rec');
-	for (let x=10; x>=1; x--) {
-		for (let y=10; y>=1; y--) {
-			let spaceIsFree = isSpaceFreeForCompRec (factor1, factor2, x, y);
-			console.log ('spaceIsFree', spaceIsFree)
+	let spaceIsFree;
+	for (let x=gameSize; x>=1; x--) {
+		for (let y=gameSize; y>=1; y--) {
+			spaceIsFree = isSpaceFreeForCompRec (factor1, factor2, x, y);
 			if (spaceIsFree == true) {
 				compRec.style.left = (x - factor2 + 1)*squareSize - squareSize/2 + 'px';
 				compRec.style.top = (y - factor1 + 1)*squareSize - squareSize/2 + 'px';
+				compRec.style.height = factor1 * squareSize + 'px';
+				compRec.style.width = factor2 * squareSize + 'px';
+				computersScore = computersScore + (factors[0] * factors [1]);
+				console.log ('computersScore', computersScore);
 		 		return
 		 	}
 		}
 	}
+	// if (spaceIsFree == false) {
+	// 	spaceIsFree = checkRotatedCompRec (compRec, factors);
+	// 	if (spaceIsFree == false) {
+	// 		let rectangle = document.getElementById('rectangle');
+	// 		rectangle.style.display = 'none';
+	// 		compRec.style.display = 'none';
+	// 		console.log('koniec');
+	// 		putFinalScores();
+	// 		displayGameOverScreen ();
+	// 	}
+		
+	// }
+}
+
+function checkRotatedCompRec (compRec, factors) {
+	let factor1 = factors[1];
+	let factor2 = factors[0];
+	let allRecs = document.getElementsByClassName ('all-rec');
+	let spaceIsFree = true;
+	for (let x=gameSize; x>=1; x--) {
+		for (let y=gameSize; y>=1; y--) {
+			console.log ('x', x, 'y', y)
+			console.log ('factor1', factor1, 'factor2', factor2)
+			spaceIsFree = isSpaceFreeForCompRec (factor1, factor2, x, y);
+			console.log('spaceIsFreeeee', spaceIsFree)
+			if (spaceIsFree == true) {
+				console.log('da sie')
+				compRec.style.left = (x - factor2 + 1)*squareSize - squareSize/2 + 'px';
+				compRec.style.top = (y - factor1 + 1)*squareSize - squareSize/2 + 'px';
+				compRec.style.height = factor1 * squareSize + 'px';
+				compRec.style.width = factor2 * squareSize + 'px';
+		 		return spaceIsFree;
+		 	}
+		}
+	}
+	if (spaceIsFree == false) {
+		return spaceIsFree;
+	}
 }
 
 function isSpaceFreeForCompRec (factor1, factor2, x, y) {
-	console.log('x, y, factor1, factor2', x, y, factor1, factor2);
 	let allRecs = document.getElementsByClassName ('all-rec');
 	let squareIsFree = true;
 	for (let i=x; i>=(x - factor2 + 1); i--) {
@@ -988,6 +1290,10 @@ function isSpaceFreeForCompRec (factor1, factor2, x, y) {
 							squareIsFree = false;
 							return
 						}
+						if (i<1 || j<1) {
+							squareIsFree = false;
+							return
+						}
 					})
 				}
 			}
@@ -997,8 +1303,9 @@ function isSpaceFreeForCompRec (factor1, factor2, x, y) {
 function createNewUserRectangle () {
 	let allRecs = document.getElementsByClassName ('all-rec');
 	let rectangle = document.getElementById('rectangle');
-	for (let x=1; x<=10; x++) {
-		for (let y=1; y<=10; y++) {
+	displayRectangle ();
+	for (let x=1; x<=gameSize; x++) {
+		for (let y=1; y<=gameSize; y++) {
 			let squareIsFree = true;
 			Array.from(allRecs).forEach(function(allRec) {
 				let a = (allRec.offsetLeft - squareSize/2 - 0.5)/squareSize + 1;
@@ -1027,8 +1334,6 @@ function putRectangleInNewPosition (lastPosition, isNewSpaceFree) {
 		rectangle.style.left = lastPosition.left + 'px';
 	}
 }
-
-
 
 function isSpaceFree () {
 	let isSpaceFree = true;
@@ -1064,4 +1369,40 @@ function moveRectangle (event) {
 	rectangle.style.top = mouse.y + 'px';
 	rectangle.style.left = mouse.x -parseInt(rectangle.style.width)/2 + 'px';
 }
+
+function hideFeedback () {
+	let right = document.getElementById('right');
+	right.style.display = 'none';
+	let wrong = document.getElementById('wrong');
+	wrong.style.display = 'none';
+}
+
+function fillInstruction () {
+	let instruction = document.getElementById('instruction-text');
+	if (view == 'explore') {
+		instruction.innerText = 'Explore how multiplication works. To change the size of the rectangle use corner dots.'
+	}
+	if (view == 'learn') {
+		instruction.innerText = 'Create a rectangle with given factors. To change the size of the rectangle use corner dots. To solve the multiplication you can count mushrooms.'
+	}
+	if (view == 'play') {
+		instruction.innerText = 'Play against the computer. Create a rectangle with the drawn factors. Then count your mushrooms. Who gets more mushrooms wins the round.'
+	}
+}
+
+function displayInstruction () {
+	let instruction = document.getElementById('instruction');
+	instruction.style.display = '';
+}
+
+function hideInstruction () {
+	let instruction = document.getElementById('instruction');
+	instruction.style.display = 'none';
+}
+
+function enableX () {
+	let x = document.getElementById('x');
+	x.onclick = hideInstruction;
+}
+
 
