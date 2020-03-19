@@ -4,7 +4,7 @@
 
 // Alek:
 // nie dziala kropka
-// pozycja lapki i dziwnie sie zachowuje jak sie nia rusza
+// dalej dziwnie sie zachowuje jak sie nia rusza
 // kropki jakos sa malo czule
 // nie chce zeby sie zaznaczaly grzybki
 // wykasowac klikalnosc buttons w play ktore maja display none
