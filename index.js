@@ -1023,35 +1023,36 @@ function okClick (factors) {
 function correctDisplay (factors) {
 	removeMushrooms ();
 	enableRectangle ();
-			if (view == 'play') {
-				hideRectangle ();
- 				createDoneRec (factors);
- 				setTimeout(hideFeedback, 1000);
- 				setTimeout(hideMultiplicationLearn, 1000);
- 				setTimeout(hideFactors, 1000);
- 				let compFactors = generateFactors ();
- 				setTimeout(displayFactors, 2000);
- 				setTimeout(changeFactorsColor, 2000);
- 				setTimeout (function() {fillFactors (compFactors)}, 2000);
- 				if (isGameOver (compFactors) == true) {
-					setTimeout (gameOverDisplay, 4000);
-				} else {
-					setTimeout (function() {createCompRec (compFactors)}, 3000)
-					setTimeout(createNewUserRectangle, 4000);	
- 					setTimeout(newExercise, 4000);
- 					setTimeout(changeBackFactorsColor, 4000);
-				}
- 			}
+	if (view == 'play') {
+		hideRectangle ();
+		createDoneRec (factors);
+		setTimeout(hideFeedback, 1000);
+		setTimeout(hideMultiplicationLearn, 1000);
+		setTimeout(hideFactors, 1000);
+		let compFactors = generateFactors ();
+		setTimeout(displayFactors, 2000);
+		setTimeout(changeFactorsColor, 2000);
+		setTimeout (function() {fillFactors (compFactors)}, 2000);
+		if (isGameOver (compFactors) == true) {
+			setTimeout (gameOverDisplay, 4000);
+		} else {
+			setTimeout (function() {createCompRec (compFactors)}, 3000)
+				setTimeout(createNewUserRectangle, 4000);	
+				setTimeout(newExercise, 4000);
+				setTimeout(changeBackFactorsColor, 4000);
+		}
+	}
+	if (view == 'learn') {
+		newExercise ();
+		createNewUserRectangle();
+	}
 }
 
 function newExercise () {
 	let factors = generateFactors ();
 	if (isGameOver (factors) == true) {
-		console.log ('koniec zabawy');
-		hideRectangle();
 		hideOk();
-		putFinalScores();
-		displayGameOverScreen ();
+		gameOverDisplay ()
 	}
 	removeAnswer ();
 	hideMultiplicationLearn ();
