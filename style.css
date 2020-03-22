@@ -66,6 +66,7 @@ body {
   margin: 30px;
   align-items: center;
   justify-content: space-evenly;
+  border: none;
 }
 
 .activity:hover {
@@ -175,6 +176,7 @@ body {
   border-radius: 8px;
   width: 4px;
   position: absolute;
+  z-index: 2;
 }
 
 .dot:hover {
@@ -291,6 +293,7 @@ body {
 }
 
 .number-container {
+  user-select: none;
   text-align: center;
   vertical-align: middle;
   line-height: 50px;  
@@ -327,11 +330,13 @@ body {
   display: block;
   height: 40px;
   width: 40px;
+  user-select: none;
 }
 
 .mushroom-icon {
   height: 40px;
   width: 40px;
+  user-select: none;
 }
 
 #back {
@@ -419,6 +424,7 @@ body {
   background: transparent; 
   border: transparent;
   padding: 0px;
+  outline: none;
 }
 
 #equation-container {
@@ -447,7 +453,7 @@ body {
   height: 25px;
   width: 25px;
   position: absolute;
-  top: -15px;
+  top: -19px;
   left: calc(50% - 12px);
   z-index: 1;
 }
@@ -455,6 +461,7 @@ body {
 #hand-icon {
   height: 25px;
   width: 25px;
+  user-select: none;
 }
 
 .side-button-container {
@@ -576,5 +583,9 @@ body {
   text-align: justify;
   line-height: 1.5;
   padding: 20px;
+}
+
+.all-buttons {
+  outline: none;
 }
 

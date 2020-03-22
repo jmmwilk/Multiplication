@@ -3,15 +3,8 @@
 // komputer nie wstawia prostokata chociaz moze (odwrocic) (czasem wstawia czasem nie?)
 
 // Alek:
-// nie dziala kropka
-// dalej dziwnie sie zachowuje jak sie nia rusza
-// kropki jakos sa malo czule
-// nie chce zeby sie zaznaczaly grzybki
-// wykasowac klikalnosc buttons w play ktore maja display none
-// nie wstawiaja sie grzybki i 1 na poczatku w prostokacie (jak jest kwadracikiem, 
-//    potem jak sie zwiekszy izmniejszy juz tak)
-// nie wyswietla sie obrazek X
-// brzydki input bo robi niebieską ramkę
+// hand dalej dziwnie sie zachowuje jak sie nia rusza
+
 
 'use strict';
 
@@ -78,20 +71,20 @@ function showRectangle () {
 }
 
 function cleanUp () {
-	removeMushrooms ();
+	createGame ();
+	makeRectangle ();
+	createNumbersContainers ();
+	addMushroomsInRectangle ();
 	hideMushrooms();
 	hideSides ();
-	removeHLines ()
+	removeHLines ();
 	hideHorizontalDivision ();
-	removeVLines ()
+	removeVLines ();
 	hideVerticalDivision ();
-	removeNumbersContainers ();
 	hideNumbersContainers ();
 	hideMultiplication ();
 	multiplicationShown = false;
 	hideMultiplicationLearn ();
-	createGame ();
-	makeRectangle ();
 	goBack();
 	removeAllRecs ();
 	showRectangle ();
@@ -105,6 +98,7 @@ function cleanUp () {
 	displayInstruction();
 	enableX ();
 	changeBackFactorsColor ();
+	enableHoverSideButtons ();
 }
 function hideGameOverScreen () {
 	let gameOverScreen = document.getElementById('game-over-screen');
@@ -274,7 +268,6 @@ function startPlay () {
 	sidesButton.style.display = 'none';
 	let countingButton = document.getElementById('counting-button');
 	countingButton.style.display = 'none';
-	countingButton.onmouseover = function () {countingButton.style.backgroundColor = 'white'};
 	mushroomsShown = true;
 	let multiplicationLearn = document.getElementById('multiplication-learn');
 	multiplicationLearn.onmousedown = hideFeedback;
@@ -283,6 +276,7 @@ function startPlay () {
 	newExercise ();
 	enableHand ();
 	enablePlayAgain ();
+	disableHoverSideButtons ();
 	let dots = document.getElementsByClassName('dot');
 	Array.from(dots).forEach(function(dot) {
 		dot.onmousedown = function () {
@@ -311,6 +305,38 @@ function startPlay () {
 			}
 		}
 	})
+}
+
+function disableHoverSideButtons () {
+	console.log('zupa')
+	let container1 = document.getElementById('container1');
+	container1.onmouseover = function () {
+		container1.style.backgroundColor = 'white';
+	}
+	let container2 = document.getElementById('container2');
+	container2.onmouseover = function () {
+		container2.style.backgroundColor = 'white';
+	}
+	let container4 = document.getElementById('container4');
+	container4.onmouseover = function () {
+		container4.style.backgroundColor = 'white';
+	}
+}
+
+function enableHoverSideButtons () {
+	console.log('zupa')
+	let container1 = document.getElementById('container1');
+	container1.onmouseover = function () {
+		container1.style.backgroundColor = '';
+	}
+	let container2 = document.getElementById('container2');
+	container2.onmouseover = function () {
+		container2.style.backgroundColor = '';
+	}
+	let container4 = document.getElementById('container4');
+	container4.onmouseover = function () {
+		container4.style.backgroundColor = '';
+	}
 }
 
 function enablePlayAgain () {
@@ -387,8 +413,10 @@ function createNumbersContainers () {
 	let width = Math.floor(parseInt(rectangle.style.width) / squareSize);
 	let height = Math.floor(parseInt(rectangle.style.height) / squareSize);
 	let number = 0;
+	console.log('width,height', width, height)
 	for (let i=0; i<width; i++) {
 		for (let x=0; x<height; x++) {
+			console.log('mama')
 			const numberContainer = document.createElement('div');
 			numberContainer.className = 'number-container';
 			numberContainer.style.height = squareSize + 'px';
@@ -1060,7 +1088,6 @@ function newExercise () {
 	let ok = document.getElementById('ok');
 	ok.onclick = function () {okClick (factors)};
 	hideFeedback();
-	removeNumbersContainers ();
 	removeHLines ();
 	removeVLines ();
 	putSidesNumbers ();
